@@ -9,7 +9,7 @@
 	xmlns:a4j="http://richfaces.org/a4j">
 
 <h:head>
-	<title>test ssssssssssssssssssss</title>
+	<title>Game session organizer</title>
 	<style>
 #mainNavigation {
 	width: 250px;
@@ -35,26 +35,30 @@
 </h:head>
 <h:body bgcolor="white">
 	<div id="header">
-		<div id="loginbox">
-			<h:panelGrid columns="2">
-				<h:outputText value="User name:" />
-				<h:inputText value="#{helloBean.msg}" />
-				<h:outputText value="Addressssws22:" />
-				<h:inputText value="#{helloBean.msg}" />
-			</h:panelGrid>
 
-			<h:commandButton value="Login" type="button"
-				action="#{helloBean.loginUser}">
-			</h:commandButton>
-			<h:outputText value="#{helloBean.loginStatus}" id="out" />
+
+		<div id="loginbox">
+			<h:form onsubmit="alert('Submitting..')">
+
+				<h:panelGrid columns="2">
+					<h:outputText value="User name:" />
+					<h:inputText value="#{userAuthenticator.username}" />
+					<h:outputText value="Password:" />
+					<h:inputText value="#{userAuthenticator.password}" />
+				</h:panelGrid>
+
+
+
+				<h:commandButton value="Login" type="button" 
+					actionListener="#{userAuthenticator.authenticateUser}"
+					reRender="out">
+				</h:commandButton>
+
+				<h:outputText value="#{userAuthenticator.isLoggedIn}" id="out" />
+			</h:form>
 		</div>
 	</div>
 	<div id="mainNavigation">
-
-
-
-
-
 
 
 
@@ -63,49 +67,38 @@
         vertical-align: top;
         }
     </h:outputStylesheet>
-		<h:form id="form">
-			<h:panelGrid columns="2" columnClasses="cols,cols" width="400">
-				<rich:panelMenu style="width:200px" itemMode="ajax" groupMode="ajax"
-					groupExpandedLeftIcon="triangleUp"
-					groupCollapsedLeftIcon="triangleDown"
-					topGroupExpandedRightIcon="chevronUp"
-					topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
-					expandSingle="false"
-					>
-					<rich:panelMenuGroup label="Group 1" expanded="true">
-						<rich:panelMenuItem label="Item 1.1" name="Item_1_1" />
-						<rich:panelMenuItem label="Item 1.2" name="Item_1_2" />
-						<rich:panelMenuItem label="Item 1.3" name="Item_1_3" />
-					</rich:panelMenuGroup>
-					<rich:panelMenuGroup label="Group 2" expanded="true">
-						<rich:panelMenuItem label="Item 2.1" name="Item_2_1" />
-						<rich:panelMenuItem label="Item 2.2" name="Item_2_2" />
-						<rich:panelMenuItem label="Item 2.3" name="Item_2_3" />
-						<rich:panelMenuGroup label="Group 2.4">
-							<rich:panelMenuItem label="Item 2.4.1" name="Item_2_4_1" />
-							<rich:panelMenuItem label="Item 2.4.2" name="Item_2_4_2" />
-							<rich:panelMenuItem label="Item 2.4.3" name="Item_2_4_3" />
-						</rich:panelMenuGroup>
-						<rich:panelMenuItem label="Item 2.5" name="Item_2_5" />
-					</rich:panelMenuGroup>
-					<rich:panelMenuGroup label="Group 3">
-						<rich:panelMenuItem label="Item 3.1" name="Item_3_1" />
-						<rich:panelMenuItem label="Item 3.2" name="Item_3_2" />
-						<rich:panelMenuItem label="Item 3.3" name="Item_3_3" />
-					</rich:panelMenuGroup>
-				</rich:panelMenu>
-				
-			</h:panelGrid>
+
+		<h:form>
+			<rich:panelMenu style="width:200px" itemMode="ajax"
+				groupMode="client" groupExpandedLeftIcon="triangleUp"
+				groupCollapsedLeftIcon="triangleDown"
+				topGroupExpandedRightIcon="chevronUp"
+				topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
+				expandSingle="false"
+				itemChangeListener="#{mainMenu.processItemChange}">
+				<rich:panelMenuGroup label="Game Sessions" expanded="true">
+					<rich:panelMenuItem label="Joined Sessions" name="join_session" />
+					<rich:panelMenuItem label="Create Session" name="create_session" />
+					<rich:panelMenuItem label="Search Sessions" name="search_session" />
+
+				</rich:panelMenuGroup>
+				<rich:panelMenuGroup label="Account settings" expanded="true">
+					<rich:panelMenuItem label="Username and password"
+						name="account_settings" />
+				</rich:panelMenuGroup>
+
+			</rich:panelMenu>
+
 		</h:form>
 
-
-
-
-
-
-
-
 	</div>
+
+	<a4j:outputPanel ajaxRendered="true">
+		<h:panelGrid id="contentPanel">
+			<ui:include src="#{mainMenu.currentPage}.xhtml" />
+		</h:panelGrid>
+	</a4j:outputPanel>
+
 
 </h:body>
 </html>

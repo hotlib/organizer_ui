@@ -1,6 +1,7 @@
 package org.gameorganizer.ui;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
 @Named()
@@ -24,6 +25,10 @@ public class HelloBean {
 
 	public void loginUser() {
 		this.loginStatus = "vsetk ok";
+	}
+	
+	public String changeHappened(ActionEvent event){
+		return "sssssssss";
 	}
 
 }
