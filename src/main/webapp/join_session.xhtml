@@ -1,8 +1,19 @@
-<ui:composition 
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h2>Include join</h2>
-    <h:outputText value="#{helloBean.msg}"  />
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<h2>Include join</h2>
+	
+	
+	<div>
+	<h:form>
+		<h:inputText id="myInput2" value="#{userAuthenticator.username}">
+			<a4j:ajax event="keyup" reRender="outText23"></a4j:ajax>
+		</h:inputText>
+		<h:outputText id="outText23" value="#{userAuthenticator.username}"></h:outputText>
+	</h:form>
+	
+	</div>
 </ui:composition>

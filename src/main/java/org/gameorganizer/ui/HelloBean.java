@@ -1,12 +1,15 @@
 package org.gameorganizer.ui;
 
+import java.io.Serializable;
+
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
 @Named()
-@RequestScoped
-public class HelloBean {
+@SessionScoped
+public class HelloBean  implements Serializable{
 	private String msg = "ako sa mas";
 	private String loginStatus = "";
 

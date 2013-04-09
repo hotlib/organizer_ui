@@ -49,7 +49,7 @@
 
 
 
-				<h:commandButton value="Login" type="button" 
+				<h:commandButton value="Login" type="button"
 					actionListener="#{userAuthenticator.authenticateUser}"
 					reRender="out">
 				</h:commandButton>
@@ -69,22 +69,22 @@
     </h:outputStylesheet>
 
 		<h:form>
-			<rich:panelMenu style="width:200px" itemMode="ajax"
-				groupMode="client" groupExpandedLeftIcon="triangleUp"
+			<rich:panelMenu style="width:200px" itemMode="ajax" groupMode="ajax"
+				groupExpandedLeftIcon="triangleUp"
 				groupCollapsedLeftIcon="triangleDown"
 				topGroupExpandedRightIcon="chevronUp"
 				topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
 				expandSingle="false"
 				itemChangeListener="#{mainMenu.processItemChange}">
 				<rich:panelMenuGroup label="Game Sessions" expanded="true">
-					<rich:panelMenuItem label="Joined Sessions" name="join_session" />
-					<rich:panelMenuItem label="Create Session" name="create_session" />
-					<rich:panelMenuItem label="Search Sessions" name="search_session" />
+					<rich:panelMenuItem label="Joined Sessions" name="join_session" render="contentPanel"/>
+					<rich:panelMenuItem label="Create Session" name="create_session" render="contentPanel"/>
+					<rich:panelMenuItem label="Search Sessions" name="search_session" render="contentPanel"/>
 
 				</rich:panelMenuGroup>
 				<rich:panelMenuGroup label="Account settings" expanded="true">
 					<rich:panelMenuItem label="Username and password"
-						name="account_settings" />
+						name="account_settings" render="contentPanel"/>
 				</rich:panelMenuGroup>
 
 			</rich:panelMenu>
@@ -93,11 +93,9 @@
 
 	</div>
 
-	<a4j:outputPanel ajaxRendered="true">
-		<h:panelGrid id="contentPanel">
-			<ui:include src="#{mainMenu.currentPage}.xhtml" />
-		</h:panelGrid>
-	</a4j:outputPanel>
+	<h:panelGrid id="contentPanel">
+		<ui:include src="#{mainMenu.currentPage}.xhtml" />
+	</h:panelGrid>
 
 
 </h:body>

@@ -1,6 +1,9 @@
 package org.gameorganizer.ui;
 
+import java.io.Serializable;
+
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.event.AbortProcessingException;
 import javax.inject.Named;
 
@@ -9,8 +12,8 @@ import org.richfaces.event.ItemChangeListener;
 
 
 @Named
-@RequestScoped
-public class MainMenu implements ItemChangeListener {
+@SessionScoped
+public class MainMenu implements ItemChangeListener, Serializable {
 	private String currentPage = "create_session";
 
 	public String getCurrentPage() {

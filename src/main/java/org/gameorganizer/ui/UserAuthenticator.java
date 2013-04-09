@@ -1,12 +1,14 @@
 package org.gameorganizer.ui;
 
-import javax.enterprise.context.RequestScoped;
+import java.io.Serializable;
+
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 @Named()
-@RequestScoped
-public class UserAuthenticator {
-	private String username;
+@SessionScoped
+public class UserAuthenticator implements Serializable{
+	private String username = "fritz ";
 	private String password;
 	private Boolean isLoggedIn = Boolean.FALSE;
 	
