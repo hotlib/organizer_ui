@@ -28,7 +28,7 @@
 #loginbox {
 	position: absolute;
 	right: 100px;
-	top: 5px;
+	top: 20px;
 }
 </style>
 
@@ -37,24 +37,22 @@
 	<div id="header">
 
 
-		<div id="loginbox">
-			<h:form onsubmit="alert('Submitting..')">
+		<div id="loginbox" >
+			<h:form >
 
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="2" rendered="#{!userAuthenticator.isLoggedIn}">
 					<h:outputText value="User name:" />
 					<h:inputText value="#{userAuthenticator.username}" />
 					<h:outputText value="Password:" />
 					<h:inputText value="#{userAuthenticator.password}" />
+					<h:commandButton value="Login" action="#{userAuthenticator.authenticateUser}" render="loginbox"/>
 				</h:panelGrid>
-
-
-
-				<h:commandButton value="Login" type="button"
-					actionListener="#{userAuthenticator.authenticateUser}"
-					reRender="out">
-				</h:commandButton>
-
-				<h:outputText value="#{userAuthenticator.isLoggedIn}" id="out" />
+				
+				
+				<h:outputText value="logged in as #{userAuthenticator.username}" id="loginResult" rendered="#{userAuthenticator.isLoggedIn}"/>
+				
+				<h:commandButton value="Logout" action="#{userAuthenticator.logOut}" render="loginbox" rendered="#{userAuthenticator.isLoggedIn}" />
+				
 			</h:form>
 		</div>
 	</div>

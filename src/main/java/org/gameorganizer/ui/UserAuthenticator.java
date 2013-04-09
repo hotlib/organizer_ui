@@ -5,9 +5,11 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-@Named()
+@Named
 @SessionScoped
 public class UserAuthenticator implements Serializable{
+
+	private static final long serialVersionUID = 3670457094853881924L;
 	private String username = "fritz ";
 	private String password;
 	private Boolean isLoggedIn = Boolean.FALSE;
@@ -31,9 +33,14 @@ public class UserAuthenticator implements Serializable{
 		this.password = password;
 	}
 	
-	public void authenticateUser() {
-		isLoggedIn = Boolean.TRUE;
+	public String authenticateUser() {
+		isLoggedIn = !isLoggedIn;
+		return null;
 	}
 	
+	public String logOut() {
+		isLoggedIn = !isLoggedIn;
+		return null;
+	}
 	
 }
