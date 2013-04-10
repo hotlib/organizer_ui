@@ -7,7 +7,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
-@Named()
+@Named
 @SessionScoped
 public class HelloBean  implements Serializable{
 	private String msg = "ako sa mas";

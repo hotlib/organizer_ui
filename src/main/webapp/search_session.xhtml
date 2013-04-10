@@ -1,8 +1,36 @@
-<ui:composition 
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h2>Include search</h2>
-  
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<h2>Include search</h2>
+
+	<h:form>
+
+
+		<a4j:repeat value="#{gameSessionManager.gameSessions}"
+			var="gameSession" rows="20" id="repeat">
+			
+				<rich:panel style="float:right; width:100%; ">
+					<f:facet name="header">
+						<h:panelGroup>
+							<h:outputText value="#{gameSession.sessionBegin}"
+								style="font-weight:bold" />
+						</h:panelGroup>
+					</f:facet>
+					<h:panelGrid columns="2">
+						<h:outputText value="User" style="font-weight:bold" />
+						<h:outputText value="#{gameSession.username}" />
+						<h:outputText value="Place" style="font-weight:bold" />
+						<h:outputText value="#{gameSession.place}" />
+					</h:panelGrid>
+				</rich:panel>
+			
+		</a4j:repeat>
+
+
+
+	</h:form>
+
 </ui:composition>
