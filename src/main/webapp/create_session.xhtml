@@ -1,8 +1,32 @@
-<ui:composition 
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h2>Include create</h2>
-   
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<h2>Include create</h2>
+
+
+	<h:form rendered="#{not empty gameSessionManager.gameSessions}">
+		<rich:dataTable value="#{gameSessionManager.gameSessions}"
+			var="gameSession" rows="2">
+			<f:facet name="caption">
+				<h:outputText value="Game sessions" />
+			</f:facet>
+			<rich:column>
+				<f:facet name="header">Place</f:facet>
+				<h:outputText value="#{gameSession.place}" />
+			</rich:column>
+			<rich:column>
+				<f:facet name="header">Session begin</f:facet>
+				<h:outputText value="#{gameSession.sessionBegin}" />
+			</rich:column>
+			<rich:column>
+				<f:facet name="header">Action</f:facet>
+				<h:link value="Edit" action="#{gameSession.editItem}" />
+			</rich:column>
+		</rich:dataTable>
+	</h:form>
+
 </ui:composition>
+

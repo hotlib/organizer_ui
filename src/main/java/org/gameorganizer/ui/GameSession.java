@@ -7,7 +7,23 @@ public class GameSession {
 	private Date sessionBegin = new Date();
 	private String username = "Fritz";
 	private String place = "Neubau Str. 18";
-		
+	private Boolean joined = Boolean.FALSE;
+	
+	
+	
+	public GameSession(String username) {
+		super();
+		this.username = username;
+	}
+
+	public Boolean getJoined() {
+		return joined;
+	}
+
+	public void setJoined(Boolean joined) {
+		this.joined = joined;
+	}
+
 	public Date getSessionBegin() {
 		return sessionBegin;
 	}
@@ -31,4 +47,10 @@ public class GameSession {
 	public void setPlace(String place) {
 		this.place = place;
 	}	
+	
+	public String flipJoined() {
+		joined = !joined;
+		return null;
+	}
+	
 }
