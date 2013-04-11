@@ -53,4 +53,12 @@ public class GameSession {
 		return null;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof GameSession && username.equals(((GameSession)obj).getUsername()))
+			return true;
+		
+		return false;
+	}
+	
 }

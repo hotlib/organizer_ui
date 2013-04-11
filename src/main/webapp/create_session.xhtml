@@ -7,12 +7,18 @@
 	<h2>Include create</h2>
 
 
-	<h:form rendered="#{not empty gameSessionManager.gameSessions}">
-		<rich:dataTable value="#{gameSessionManager.gameSessions}"
-			var="gameSession" rows="2">
-			<f:facet name="caption">
-				<h:outputText value="Game sessions" />
-			</f:facet>
+	<h:form id="sessionTable">
+		<h:commandButton value="Add"
+			action="#{gameSessionManager.createSession}" />
+
+		<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
+			var="gameSession"
+			rendered="#{not empty gameSessionManager.gameSessions}"
+			selectionMode="single">
+
+			<a4j:ajax execute="aaa" event="selectionchange"
+				listener="#{gameSessionManager.selection}" render=":res" />
+
 			<rich:column>
 				<f:facet name="header">Place</f:facet>
 				<h:outputText value="#{gameSession.place}" />
@@ -23,10 +29,24 @@
 			</rich:column>
 			<rich:column>
 				<f:facet name="header">Action</f:facet>
-				<h:link value="Edit" action="#{gameSession.editItem}" />
-			</rich:column>
-		</rich:dataTable>
-	</h:form>
 
+				<h:commandButton value="Delete"
+					action="#{gameSessionManager.deleteSession(gameSession)}" />
+
+			</rich:column>
+		</rich:extendedDataTable>
+
+	</h:form>
+	<h:form>
+		<a4j:outputPanel id="res">
+			<h:panelGrid columns="2">
+				<h:outputText value="Place:" />
+				<h:inputText value="#{gameSessionManager.selectionItem.place}" />
+				<h:outputText value="Username:" />
+				<h:inputText value="#{gameSessionManager.selectionItem.username}" />
+				<h:commandButton value="Save" render="sessionTable" />
+			</h:panelGrid>
+		</a4j:outputPanel>
+	</h:form>
 </ui:composition>
 

@@ -17,9 +17,20 @@ public class GameSessionManager implements Serializable{
 	private List <GameSession> gameSessions = new LinkedList<GameSession>();
 	private Object selectionItem;
 	
+	private String dummy;
 	
 	
 	
+	public String getDummy() {
+		return dummy;
+	}
+
+
+	public void setDummy(String dummy) {
+		this.dummy = dummy;
+	}
+
+
 	public Object getSelectionItem() {
 		return selectionItem;
 	}
@@ -61,16 +72,24 @@ public class GameSessionManager implements Serializable{
 		return null;
 	}
 	
-	private Boolean isJoined(GameSession session) {
+	public Boolean isJoined(GameSession session) {
 		return session.getJoined();
 
 	}
 	
-	private String flipJoined(GameSession session) {
+	public String flipJoined(GameSession session) {
 		session.flipJoined();
 		return null;
 	}
 
+	public String deleteSession(GameSession session){
+		gameSessions.remove(session);
+		return null;
+	}
 	
+	public String createSession() {
+		gameSessions.add(new GameSession("XXX"));
+		return null;
+	}
 	
 }
