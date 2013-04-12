@@ -37,22 +37,25 @@
 	<div id="header">
 
 
-		<div id="loginbox" >
-			<h:form >
+		<div id="loginbox">
+			<h:form>
 
 				<h:panelGrid columns="2" rendered="#{!userAuthenticator.isLoggedIn}">
 					<h:outputText value="User name:" />
 					<h:inputText value="#{userAuthenticator.username}" />
 					<h:outputText value="Password:" />
 					<h:inputText value="#{userAuthenticator.password}" />
-					<h:commandButton value="Login" action="#{userAuthenticator.authenticateUser}" render="loginbox"/>
+					<h:commandButton value="Login"
+						action="#{userAuthenticator.authenticateUser}" render="loginbox" />
 				</h:panelGrid>
-				
-				
-				<h:outputText value="logged in as #{userAuthenticator.username}" id="loginResult" rendered="#{userAuthenticator.isLoggedIn}"/>
-				
-				<h:commandButton value="Logout" action="#{userAuthenticator.logOut}" render="loginbox" rendered="#{userAuthenticator.isLoggedIn}" />
-				
+
+
+				<h:outputText value="logged in as #{userAuthenticator.username}"
+					id="loginResult" rendered="#{userAuthenticator.isLoggedIn}" />
+
+				<h:commandButton value="Logout" action="#{userAuthenticator.logOut}"
+					render="loginbox" rendered="#{userAuthenticator.isLoggedIn}" />
+
 			</h:form>
 		</div>
 	</div>
@@ -72,17 +75,16 @@
 				groupCollapsedLeftIcon="triangleDown"
 				topGroupExpandedRightIcon="chevronUp"
 				topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
-				expandSingle="false"
-				itemChangeListener="#{mainMenu.processItemChange}">
+				expandSingle="false">
 				<rich:panelMenuGroup label="Game Sessions" expanded="true">
-					<rich:panelMenuItem label="Joined Sessions" name="join_session" render="contentPanel"/>
-					<rich:panelMenuItem label="Create Session" name="create_session" render="contentPanel"/>
-					<rich:panelMenuItem label="Search Sessions" name="search_session" render="contentPanel"/>
+					<rich:panelMenuItem label="Create Session" render="contentPanel"
+						action="create_session" />
+					<rich:panelMenuItem label="Search Sessions" action="search_session" />
 
 				</rich:panelMenuGroup>
 				<rich:panelMenuGroup label="Account settings" expanded="true">
 					<rich:panelMenuItem label="Username and password"
-						name="account_settings" render="contentPanel"/>
+						action="account_settings" />
 				</rich:panelMenuGroup>
 
 			</rich:panelMenu>
@@ -91,11 +93,10 @@
 
 	</div>
 
+
 	<h:panelGrid id="contentPanel">
-		<ui:include src="#{mainMenu.currentPage}.xhtml" />
+		<ui:insert name="content" />
 	</h:panelGrid>
-
-
 </h:body>
 </html>
 

@@ -1,60 +1,54 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition template="welcome.xhtml"
+	mlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j">
-	<h2>Include search</h2>
 
 
 
-	<!-- 
-	<rich:dataTable value="#{gameSessionManager.gameSessions}"
-		var="gameSession" rows="2"
-		rendered="#{not empty gameSessionManager.gameSessions}"
-		 width="100%">
-	 -->
+	<ui:define name="content">
+		<h2>Include search</h2>
+
+		<h:form>
+			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
+				var="gameSession"
+				rendered="#{not empty gameSessionManager.gameSessions}" width="100%"
+				style="height:100%; width:100%;" selectionMode="single">
+
+				<a4j:ajax execute="@form" event="selectionchange"
+					listener="#{gameSessionManager.selection}" render=":res" />
+
+				<f:facet name="caption">
+					<h:outputText value="Game sessions" />
+				</f:facet>
+				<rich:column>
+					<f:facet name="header">Place</f:facet>
+					<h:outputText value="#{gameSession.place}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Session begin</f:facet>
+					<h:outputText value="#{gameSession.sessionBegin}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Action</f:facet>
+
+					<h:commandButton value="#{gameSession.joined ? 'Leave' : 'Join'}"
+						action="#{gameSession.flipJoined}" render="searchTable" />
+
+				</rich:column>
+			</rich:extendedDataTable>
+		</h:form>
 
 
+		<a4j:outputPanel id="res">
 
-	<h:form>
-		<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
-			var="gameSession"
-			rendered="#{not empty gameSessionManager.gameSessions}" width="100%"
-			style="height:100%; width:100%;" selectionMode="single">
+			<rich:panel header="Selected Rows:"
+				rendered="#{not empty gameSessionManager.selectionItem}">
 
-			<a4j:ajax execute="@form" event="selectionchange"
-				listener="#{gameSessionManager.selection}" render=":res" />
-
-			<f:facet name="caption">
-				<h:outputText value="Game sessions" />
-			</f:facet>
-			<rich:column>
-				<f:facet name="header">Place</f:facet>
-				<h:outputText value="#{gameSession.place}" />
-			</rich:column>
-			<rich:column>
-				<f:facet name="header">Session begin</f:facet>
-				<h:outputText value="#{gameSession.sessionBegin}" />
-			</rich:column>
-			<rich:column>
-				<f:facet name="header">Action</f:facet>
-
-				<h:commandButton value="#{gameSession.joined ? 'Leave' : 'Join'}"
-					action="#{gameSession.flipJoined}" render="searchTable" />
-
-			</rich:column>
-		</rich:extendedDataTable>
-	</h:form>
-
-
-	<a4j:outputPanel id="res">
-
-		<rich:panel header="Selected Rows:"
-			rendered="#{not empty gameSessionManager.selectionItem}">
-
-			<h:outputText value="#{gameSessionManager.selectionItem.username}" />
-		</rich:panel>
-	</a4j:outputPanel>
-
+				<h:outputText value="#{gameSessionManager.selectionItem.username}" />
+			</rich:panel>
+		</a4j:outputPanel>
+	</ui:define>
 </ui:composition>

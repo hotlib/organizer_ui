@@ -1,52 +1,57 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition template="welcome.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j">
-	<h2>Include create</h2>
 
 
-	<h:form id="sessionTable">
-		<h:commandButton value="Add"
-			action="#{gameSessionManager.createSession}" />
 
-		<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
-			var="gameSession"
-			rendered="#{not empty gameSessionManager.gameSessions}"
-			selectionMode="single">
+	<ui:define name="content">
+		<h2>Include create</h2>
+		<h:form id="sessionTable">
+			<h:commandButton value="Add"
+				action="#{gameSessionManager.createSession}" />
 
-			<a4j:ajax execute="aaa" event="selectionchange"
-				listener="#{gameSessionManager.selection}" render=":res" />
+			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
+				var="gameSession"
+				rendered="#{not empty gameSessionManager.gameSessions}"
+				selectionMode="single">
 
-			<rich:column>
-				<f:facet name="header">Place</f:facet>
-				<h:outputText value="#{gameSession.place}" />
-			</rich:column>
-			<rich:column>
-				<f:facet name="header">Session begin</f:facet>
-				<h:outputText value="#{gameSession.sessionBegin}" />
-			</rich:column>
-			<rich:column>
-				<f:facet name="header">Action</f:facet>
+				<a4j:ajax execute="aaa" event="selectionchange"
+					listener="#{gameSessionManager.selection}" render=":res" />
 
-				<h:commandButton value="Delete"
-					action="#{gameSessionManager.deleteSession(gameSession)}" />
+				<rich:column>
+					<f:facet name="header">Place</f:facet>
+					<h:outputText value="#{gameSession.place}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Session begin</f:facet>
+					<h:outputText value="#{gameSession.sessionBegin}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Action</f:facet>
 
-			</rich:column>
-		</rich:extendedDataTable>
+					<h:commandButton value="Delete"
+						action="#{gameSessionManager.deleteSession(gameSession)}" />
 
-	</h:form>
-	<h:form>
-		<a4j:outputPanel id="res">
-			<h:panelGrid columns="2">
-				<h:outputText value="Place:" />
-				<h:inputText value="#{gameSessionManager.selectionItem.place}" />
-				<h:outputText value="Username:" />
-				<h:inputText value="#{gameSessionManager.selectionItem.username}" />
-				<h:commandButton value="Save" render="sessionTable" />
-			</h:panelGrid>
-		</a4j:outputPanel>
-	</h:form>
+				</rich:column>
+			</rich:extendedDataTable>
+
+		</h:form>
+		<h:form>
+			<a4j:outputPanel id="res">
+				<h:panelGrid columns="2">
+					<h:outputText value="Place:" />
+					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
+					<h:outputText value="Username:" />
+					<h:inputText value="#{gameSessionManager.selectionItem.username}" />
+					<h:commandButton value="Save" render="sessionTable" />
+				</h:panelGrid>
+			</a4j:outputPanel>
+		</h:form>
+
+	</ui:define>
 </ui:composition>
 

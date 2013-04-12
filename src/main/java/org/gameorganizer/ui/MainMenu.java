@@ -20,6 +20,10 @@ public class MainMenu implements ItemChangeListener, Serializable {
 		return currentPage;
 	}
 
+	public String currentPage() {
+		return currentPage;
+	}
+	
 	public void setCurrentPage(String currentPage) {
 		this.currentPage = currentPage;
 	}
