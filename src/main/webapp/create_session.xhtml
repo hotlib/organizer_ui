@@ -7,7 +7,9 @@
 	xmlns:a4j="http://richfaces.org/a4j">
 
 
-
+<!-- #{rich:component('createdSessions')}.deselectRow(0); 
+onclick="#{rich:component('createdSessions')}.selectRow(#{gameSessionManager.lastIndex}); #{rich:component('createdSessions')}.setActiveRow(#{gameSessionManager.lastIndex});"
+-->
 	<ui:define name="content">
 		<h2>Include create</h2>
 		<h:form id="sessionTable">
@@ -17,7 +19,7 @@
 			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
 				var="gameSession"
 				rendered="#{not empty gameSessionManager.gameSessions}"
-				selectionMode="single">
+				selectionMode="single" id="createdSessions">
 
 				<a4j:ajax execute="aaa" event="selectionchange"
 					listener="#{gameSessionManager.selection}" render=":res" />

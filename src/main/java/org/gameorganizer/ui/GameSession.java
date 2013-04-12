@@ -1,6 +1,8 @@
 package org.gameorganizer.ui;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GameSession {
 	
@@ -8,9 +10,17 @@ public class GameSession {
 	private String username = "Fritz";
 	private String place = "Neubau Str. 18";
 	private Boolean joined = Boolean.FALSE;
+	private List <String> joinedUsers = new LinkedList<String>();
 	
 	
-	
+	public List<String> getJoinedUsers() {
+		return joinedUsers;
+	}
+
+	public void setJoinedUsers(List<String> joinedUsers) {
+		this.joinedUsers = joinedUsers;
+	}
+
 	public GameSession(String username) {
 		super();
 		this.username = username;
