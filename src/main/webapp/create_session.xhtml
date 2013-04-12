@@ -28,7 +28,9 @@
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Session begin</f:facet>
-					<h:outputText value="#{gameSession.sessionBegin}" />
+					<h:outputText value="#{gameSession.sessionBegin}" >
+					 <f:convertDateTime type="date" pattern="dd-MM-yyyy HH:mm"/>
+					</h:outputText>
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Action</f:facet>

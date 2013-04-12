@@ -9,7 +9,7 @@
 
 
 	<ui:define name="content">
-		<h2>Include search</h2>
+
 
 		<h:form>
 			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
@@ -39,16 +39,15 @@
 
 				</rich:column>
 			</rich:extendedDataTable>
+	
+			<a4j:outputPanel id="res">
+
+				<rich:panel header="Selected Rows:"
+					rendered="#{not empty gameSessionManager.selectionItem}">
+
+					<h:outputText value="#{gameSessionManager.selectionItem.username}" />
+				</rich:panel>
+			</a4j:outputPanel>
 		</h:form>
-
-
-		<a4j:outputPanel id="res">
-
-			<rich:panel header="Selected Rows:"
-				rendered="#{not empty gameSessionManager.selectionItem}">
-
-				<h:outputText value="#{gameSessionManager.selectionItem.username}" />
-			</rich:panel>
-		</a4j:outputPanel>
 	</ui:define>
 </ui:composition>
