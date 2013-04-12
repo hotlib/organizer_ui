@@ -47,6 +47,12 @@
 					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
 					<h:outputText value="Username:" />
 					<h:inputText value="#{gameSessionManager.selectionItem.username}" />
+					<h:outputText value="Date and time:" />
+					<rich:calendar locale="de/DE" popup="true" value="#{gameSessionManager.selectionItem.sessionBegin}"
+						datePattern="dd/M/yy HH:mm" showApplyButton="false"
+						cellWidth="24px" cellHeight="22px" style="width:200px">
+					</rich:calendar>
+
 					<h:commandButton value="Save" render="sessionTable" />
 				</h:panelGrid>
 			</a4j:outputPanel>
