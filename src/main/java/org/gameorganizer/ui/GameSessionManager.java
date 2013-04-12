@@ -22,32 +22,35 @@ public class GameSessionManager implements Serializable {
 		return lastIndex;
 	}
 
-
 	public void setLastIndex(int lastIndex) {
 		this.lastIndex = lastIndex;
 	}
-
 
 	public GameSession getSelectionItem() {
 		return selectionItem;
 	}
 
-		
 	public void setSelectionItem(GameSession selectionItem) {
 		this.selectionItem = selectionItem;
 	}
 
 	public void selection(AjaxBehaviorEvent event) {
+		if(gameSessions.isEmpty())
+			return;
+		
 		UIExtendedDataTable dataTable = (UIExtendedDataTable) event
 				.getComponent();
 		if (!dataTable.getSelection().isEmpty()) {
 			Integer index = (Integer) dataTable.getSelection().iterator()
 					.next();
-			selectionItem = gameSessions.get(index);
+
+			if (index >= gameSessions.size())
+				selectionItem = gameSessions.get(gameSessions.size() - 1);
+			else
+				selectionItem = gameSessions.get(index);
 		}
 		return;
 	}
-
 
 	public List<GameSession> getGameSessions() {
 		if (gameSessions.isEmpty())
@@ -92,8 +95,6 @@ public class GameSessionManager implements Serializable {
 		selectionItem = null;
 	}
 
-	
-	
 	public void createSession() {
 		GameSession g = new GameSession("XXX");
 		gameSessions.add(g);
