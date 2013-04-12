@@ -8,13 +8,14 @@
 
 
 <!-- #{rich:component('createdSessions')}.deselectRow(0); 
-onclick="#{rich:component('createdSessions')}.selectRow(#{gameSessionManager.lastIndex}); #{rich:component('createdSessions')}.setActiveRow(#{gameSessionManager.lastIndex});"
 -->
 	<ui:define name="content">
 		<h2>Include create</h2>
 		<h:form id="sessionTable">
-			<h:commandButton value="Add"
-				action="#{gameSessionManager.createSession}" />
+			<a4j:commandButton value="Add"
+				action="#{gameSessionManager.createSession}" render="sessionTable, :res" 
+				oncomplete="#{rich:component('createdSessions')}.selectRow(#{gameSessionManager.lastIndex}); #{rich:component('createdSessions')}.setActiveRow(#{gameSessionManager.lastIndex});"
+				/>
 
 			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
 				var="gameSession"
