@@ -10,14 +10,14 @@ public class GameSession {
 	private String username = "Fritz";
 	private String place = "Neubau Str. 18";
 	private Boolean joined = Boolean.FALSE;
-	private List <String> joinedUsers = new LinkedList<String>();
+	private List <Player> joinedUsers = new LinkedList<Player>();
 	
 	
-	public List<String> getJoinedUsers() {
+	public List<Player> getJoinedUsers() {
 		return joinedUsers;
 	}
 
-	public void setJoinedUsers(List<String> joinedUsers) {
+	public void setJoinedUsers(List<Player> joinedUsers) {
 		this.joinedUsers = joinedUsers;
 	}
 

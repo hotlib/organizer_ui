@@ -16,14 +16,12 @@ import org.richfaces.component.UIExtendedDataTable;
 public class GameSessionManager implements Serializable {
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();
 	private GameSession selectionItem;
-	private int lastIndex = 3;
-
+	
 	public int getLastIndex() {
-		return lastIndex;
+		return gameSessions.isEmpty() ? 0 : gameSessions.size() - 1;
 	}
 
 	public void setLastIndex(int lastIndex) {
-		this.lastIndex = lastIndex;
 	}
 
 	public GameSession getSelectionItem() {
@@ -60,11 +58,11 @@ public class GameSessionManager implements Serializable {
 	}
 
 	private void init() {
-		List<String> joinedUsers = new LinkedList<String>();
-		joinedUsers.add("aaa");
-		joinedUsers.add("bbb");
-		joinedUsers.add("ccc");
-		joinedUsers.add("ddd");
+		List<Player> joinedUsers = new LinkedList<Player>();
+		joinedUsers.add(new Player());
+		joinedUsers.add(new Player());
+		joinedUsers.add(new Player());
+		joinedUsers.add(new Player());
 
 		GameSession tmp;
 
@@ -98,7 +96,6 @@ public class GameSessionManager implements Serializable {
 	public void createSession() {
 		GameSession g = new GameSession("XXX");
 		gameSessions.add(g);
-		lastIndex = gameSessions.isEmpty() ? 0 : gameSessions.size() - 1;
 		selectionItem = g;
 	}
 }
