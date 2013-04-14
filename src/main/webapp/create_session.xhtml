@@ -12,75 +12,98 @@
 	<ui:define name="content">
 		<h2>Include create</h2>
 
-			<h:form id="sessionTable">
-				<a4j:commandButton value="Add"
-					action="#{gameSessionManager.createSession}"
-					render="sessionTable, :res"
-					oncomplete="#{rich:component('createdSessions')}.selectRow(#{gameSessionManager.lastIndex}); #{rich:component('createdSessions')}.setActiveRow(#{gameSessionManager.lastIndex});" />
+		<h:form id="sessionTable">
+			<a4j:commandButton value="Add"
+				action="#{gameSessionManager.createSession}"
+				render="sessionTable, :res"
+				oncomplete="#{rich:component('createdSessions')}.selectRow(#{gameSessionManager.lastIndex}); #{rich:component('createdSessions')}.setActiveRow(#{gameSessionManager.lastIndex});" />
 
-				<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
-					var="gameSession"
-					rendered="#{not empty gameSessionManager.gameSessions}"
-					selectionMode="single" id="createdSessions">
+			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
+				var="gameSession"
+				rendered="#{not empty gameSessionManager.gameSessions}"
+				selectionMode="single" id="createdSessions">
 
-					<a4j:ajax event="selectionchange"
-						listener="#{gameSessionManager.selection}" render=":res" />
+				<a4j:ajax event="selectionchange"
+					listener="#{gameSessionManager.selection}" render=":res" />
 
-					<rich:column width="550px">
-						<f:facet name="header">Place</f:facet>
-						<h:outputText value="#{gameSession.place}" />
-					</rich:column>
-					<rich:column width="120px">
-						<f:facet name="header">Session begin</f:facet>
-						<h:outputText value="#{gameSession.sessionBegin}">
-							<f:convertDateTime type="date" pattern="dd-MM-yyyy HH:mm" />
-						</h:outputText>
-					</rich:column>
-					<rich:column width="80px">
-						<f:facet name="header">Action</f:facet>
+				<rich:column width="550px">
+					<f:facet name="header">Place</f:facet>
+					<h:outputText value="#{gameSession.place}" />
+				</rich:column>
+				<rich:column width="120px">
+					<f:facet name="header">Session begin</f:facet>
+					<h:outputText value="#{gameSession.sessionBegin}">
+						<f:convertDateTime type="date" pattern="dd-MM-yyyy HH:mm" />
+					</h:outputText>
+				</rich:column>
+				<rich:column width="100px">
+					<f:facet name="header">Action</f:facet>
 
-						<h:commandButton value="Delete"
-							action="#{gameSessionManager.deleteSession(gameSession)}" />
+					<h:commandButton value="Delete"
+						action="#{gameSessionManager.deleteSession(gameSession)}" />
 
-					</rich:column>
-				</rich:extendedDataTable>
+					<a4j:commandLink value="edit" render="sessionTable" execute="@this"
+						oncomplete="#{rich:component('editPane')}.show()">
+						<f:setPropertyActionListener
+							target="#{gameSessionManager.selectionItem}"
+							value="#{gameSession}" />
+					</a4j:commandLink>
 
-			</h:form>
-			<h:form id="res">
-				<a4j:outputPanel>
-					<h:panelGrid columns="2">
-						<h:outputText value="Place:" />
-						<h:inputText value="#{gameSessionManager.selectionItem.place}" />
-						<h:outputText value="Username:" />
-						<h:inputText value="#{gameSessionManager.selectionItem.username}" />
-						<h:outputText value="Date and time:" />
-						<rich:calendar locale="de/DE" popup="true"
-							value="#{gameSessionManager.selectionItem.sessionBegin}"
-							datePattern="dd/M/yy HH:mm" showApplyButton="true"
-							cellWidth="24px" cellHeight="22px" style="width:200px">
-						</rich:calendar>
 
-						<h:commandButton value="Save" render="sessionTable" />
-					</h:panelGrid>
-				</a4j:outputPanel>
 
-				<rich:extendedDataTable
-					value="#{gameSessionManager.selectionItem.joinedUsers}"
-					var="player"
-					rendered="#{not empty gameSessionManager.selectionItem.joinedUsers}"
-					selectionMode="none" id="joinedPlayers">
+				</rich:column>
+			</rich:extendedDataTable>
 
-					<rich:column width="100px">
-						<f:facet name="header">Player name</f:facet>
-						<h:outputText value="#{player.username}" />
-					</rich:column>
-					<rich:column width="650px">
-						<f:facet name="header">Recommendation</f:facet>
-						<h:outputText value="#{player.request}" />
-					</rich:column>
-				</rich:extendedDataTable>
-			</h:form>
-	
+
+			<rich:popupPanel header="Edit game session" id="editPane"
+				domElementAttachment="parent" width="400" height="170">
+				<h:panelGrid columns="2">
+					<h:outputText value="Place:" />
+					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
+					<h:outputText value="Username:" />
+					<h:inputText value="#{gameSessionManager.selectionItem.username}" />
+					<h:outputText value="Date and time:" />
+					<rich:calendar locale="de/DE" popup="true"
+						value="#{gameSessionManager.selectionItem.sessionBegin}"
+						datePattern="dd/M/yy HH:mm" showApplyButton="true"
+						cellWidth="24px" cellHeight="22px" style="width:200px">
+					</rich:calendar>
+
+
+				</h:panelGrid>
+				<a4j:commandButton value="Store" render="createdSessions" action="#{gameSessionManager.save}"
+					execute="editPane"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}" />
+				<a4j:commandButton value="Cancel"
+					onclick="#{rich:component('editPane')}.hide(); return false;" />
+			</rich:popupPanel>
+
+
+
+
+		</h:form>
+
+
+
+		<h:form id="res">
+		
+
+			<rich:extendedDataTable
+				value="#{gameSessionManager.selectionItem.joinedUsers}" var="player"
+				rendered="#{not empty gameSessionManager.selectionItem.joinedUsers}"
+				selectionMode="none" id="joinedPlayers">
+
+				<rich:column width="100px">
+					<f:facet name="header">Player name</f:facet>
+					<h:outputText value="#{player.username}" />
+				</rich:column>
+				<rich:column width="650px">
+					<f:facet name="header">Recommendation</f:facet>
+					<h:outputText value="#{player.request}" />
+				</rich:column>
+			</rich:extendedDataTable>
+		</h:form>
+
 	</ui:define>
 </ui:composition>
 

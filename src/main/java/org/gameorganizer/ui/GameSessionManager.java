@@ -16,7 +16,18 @@ import org.richfaces.component.UIExtendedDataTable;
 public class GameSessionManager implements Serializable {
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();
 	private GameSession selectionItem;
+	private String dummy = "notin";
 	
+	
+	
+	public String getDummy() {
+		return dummy;
+	}
+
+	public void setDummy(String dummy) {
+		this.dummy = dummy;
+	}
+
 	public int getLastIndex() {
 		return gameSessions.isEmpty() ? 0 : gameSessions.size() - 1;
 	}
@@ -29,6 +40,7 @@ public class GameSessionManager implements Serializable {
 	}
 
 	public void setSelectionItem(GameSession selectionItem) {
+		System.out.println("choosing " + selectionItem.getUsername());
 		this.selectionItem = selectionItem;
 	}
 
@@ -38,7 +50,7 @@ public class GameSessionManager implements Serializable {
 		
 		UIExtendedDataTable dataTable = (UIExtendedDataTable) event
 				.getComponent();
-		if (!dataTable.getSelection().isEmpty()) {
+		if (dataTable.getSelection() != null && !dataTable.getSelection().isEmpty()) {
 			Integer index = (Integer) dataTable.getSelection().iterator()
 					.next();
 
@@ -98,4 +110,10 @@ public class GameSessionManager implements Serializable {
 		gameSessions.add(g);
 		selectionItem = g;
 	}
+	
+	public void save() {
+		System.out.println("called save");
+
+	}
+	
 }
