@@ -39,8 +39,12 @@
 				<rich:column width="100px">
 					<f:facet name="header">Action</f:facet>
 
-					<a4j:commandLink value="Delete" execute="@this" render="sessionTable"
-						action="#{gameSessionManager.deleteSession(gameSession)}" />
+					<a4j:commandLink value="Delete" execute="@none" render="@none"
+						onclick="#{rich:component('confirmPane')}.show()" />
+
+					<a4j:jsFunction name="deleteGameSession" action="#{gameSessionManager.deleteSession(gameSession)}"
+						render="sessionTable" execute="@this"
+						oncomplete="#{rich:component('confirmPane')}.hide();" />
 
 					<a4j:commandLink value="edit" render="sessionTable" execute="@this"
 						oncomplete="#{rich:component('editPane')}.show()">
@@ -54,10 +58,20 @@
 				</rich:column>
 			</rich:extendedDataTable>
 
+			<rich:popupPanel id="confirmPane" autosized="true">
+				<h:outputText
+					value="Are you sure you want to delete the game session? "/>
+				
+				<a4j:commandButton value="Cancel" render="confirmPane"
+					onclick="#{rich:component('confirmPane')}.hide(); return false;" />
+				<a4j:commandButton value="Delete" onclick="deleteGameSession(); #{rich:component('confirmPane')}.hide(); return false;" />
+			</rich:popupPanel>
+
 
 			<rich:popupPanel header="Edit game session" id="editPane"
 				domElementAttachment="parent" width="400" height="170">
-				<h:panelGrid columns="2" rendered="#{not empty gameSessionManager.selectionItem}">
+				<h:panelGrid columns="2"
+					rendered="#{not empty gameSessionManager.selectionItem}">
 					<h:outputText value="Place:" />
 					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
 					<h:outputText value="Username:" />
@@ -71,22 +85,19 @@
 
 
 				</h:panelGrid>
-				<a4j:commandButton value="Store" render="createdSessions" action="#{gameSessionManager.save}"
-					execute="editPane"
+				<a4j:commandButton value="Store" render="createdSessions"
+					action="#{gameSessionManager.save}" execute="editPane"
 					oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}" />
 				<a4j:commandButton value="Cancel"
 					onclick="#{rich:component('editPane')}.hide(); return false;" />
 			</rich:popupPanel>
-
-
-
 
 		</h:form>
 
 
 
 		<h:form id="res">
-		
+
 
 			<rich:extendedDataTable
 				value="#{gameSessionManager.selectionItem.joinedUsers}" var="player"
