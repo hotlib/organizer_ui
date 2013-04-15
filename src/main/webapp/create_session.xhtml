@@ -39,14 +39,14 @@
 				<rich:column width="100px">
 					<f:facet name="header">Action</f:facet>
 
-					<a4j:commandLink value="Delete" execute="@none" render="@none"
+					<a4j:commandLink value="Delete" style="float: right;" execute="@none" render="@none"
 						onclick="#{rich:component('confirmPane')}.show()" />
 
 					<a4j:jsFunction name="deleteGameSession" action="#{gameSessionManager.deleteSession(gameSession)}"
 						render="sessionTable" execute="@this"
 						oncomplete="#{rich:component('confirmPane')}.hide();" />
 
-					<a4j:commandLink value="edit" render="sessionTable" execute="@this"
+					<a4j:commandLink value="Edit" style="float: left;" render="sessionTable" execute="@this"
 						oncomplete="#{rich:component('editPane')}.show()">
 						<f:setPropertyActionListener
 							target="#{gameSessionManager.selectionItem}"
