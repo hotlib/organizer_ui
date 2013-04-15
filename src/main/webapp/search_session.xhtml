@@ -17,7 +17,7 @@
 				rendered="#{not empty gameSessionManager.gameSessions}" width="100%"
 				style="height:100%; width:100%;" selectionMode="single">
 
-				<a4j:ajax execute="@form" event="selectionchange"
+				<a4j:ajax execute="@this" event="selectionchange"
 					listener="#{gameSessionManager.selection}" render=":res" />
 
 				<f:facet name="caption">
@@ -39,15 +39,51 @@
 
 				</rich:column>
 			</rich:extendedDataTable>
-	
+
 			<a4j:outputPanel id="res">
 
-				<rich:panel header="Selected Rows:"
-					rendered="#{not empty gameSessionManager.selectionItem}">
 
-					<h:outputText value="#{gameSessionManager.selectionItem.username}" />
-				</rich:panel>
+
+				<h:panelGrid columns="3" id="updateInfo"
+					rendered="#{not empty gameSessionManager.selectionItem and gameSessionManager.selectionItem.joined}">
+					<h:outputText value="Game request:" />
+					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
+					
+					<h:commandButton value="update"
+						render="searchTable" execute="updateInfo"/>
+					
+				</h:panelGrid>
+
+
+
+				<rich:extendedDataTable
+					value="#{gameSessionManager.selectionItem.joinedUsers}"
+					var="player"
+					rendered="#{not empty gameSessionManager.selectionItem.joinedUsers}"
+					selectionMode="none" id="joinedPlayers">
+
+					<rich:column width="100px">
+						<f:facet name="header">Player name</f:facet>
+						<h:outputText value="#{player.username}" />
+					</rich:column>
+					<rich:column width="650px">
+						<f:facet name="header">Recommendation</f:facet>
+						<h:outputText value="#{player.request}" />
+					</rich:column>
+				</rich:extendedDataTable>
+
+
 			</a4j:outputPanel>
+
+
+
+
+
+
+
+
+
+
 		</h:form>
 	</ui:define>
 </ui:composition>
