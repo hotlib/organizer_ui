@@ -57,7 +57,7 @@
 
 			<rich:popupPanel header="Edit game session" id="editPane"
 				domElementAttachment="parent" width="400" height="170">
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="2" rendered="#{not empty gameSessionManager.selectionItem}">
 					<h:outputText value="Place:" />
 					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
 					<h:outputText value="Username:" />
