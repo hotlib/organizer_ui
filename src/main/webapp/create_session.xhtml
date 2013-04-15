@@ -39,7 +39,7 @@
 				<rich:column width="100px">
 					<f:facet name="header">Action</f:facet>
 
-					<h:commandButton value="Delete"
+					<a4j:commandLink value="Delete" execute="@this" render="sessionTable"
 						action="#{gameSessionManager.deleteSession(gameSession)}" />
 
 					<a4j:commandLink value="edit" render="sessionTable" execute="@this"
