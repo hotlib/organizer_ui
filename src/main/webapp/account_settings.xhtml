@@ -1,14 +1,17 @@
-<ui:composition  template="welcome.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
-  
-  <ui:define name="content">
-  
-    <h2>Include account</h2>
-  
-  
-  </ui:define>
-  
+<ui:composition template="welcome.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="content">
+
+		<h2>Include account</h2>
+		<h:form>
+			<h:commandButton value="Test DB" action="#{dbTestEjb.testDb}" />
+
+		</h:form>
+
+	</ui:define>
+
 </ui:composition>
