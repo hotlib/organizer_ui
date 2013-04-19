@@ -1,5 +1,6 @@
 package org.gameorganizer.ui;
 
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,15 +10,18 @@ import javax.persistence.PersistenceContext;
 //zistit ako robit dialect pre postgresql
 //zistit ci sa da on-the-fly vytvorit tabulka pre entitu
 
-@Stateless
+@Stateful
 public class RealEjb {
 
 	@PersistenceContext(unitName="testtest")
 	private EntityManager entityManeger;
 	
+	private long id = 5;
+	
 	
 	public void someCall() {
-		Person p = new Person(1l, "test");
+		id++;
+		Person p = new Person(id, "test");
 		entityManeger.persist(p);
 		
 		return;
