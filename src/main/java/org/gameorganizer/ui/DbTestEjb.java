@@ -1,16 +1,26 @@
 package org.gameorganizer.ui;
 
-import javax.ejb.Stateless;
+import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 
 @Named
 public class DbTestEjb {
-
+	
+	@EJB
+	RealEjb realEjb;
+	
 	public void testDb(){
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("testtest");
+
+		realEjb.someCall();
+		
+		//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("testtest");
+//		EntityManager em = emf.createEntityManager();
+//		
+//		em.close();
+//		
+//		emf.close(); 
+		
 	}
 	
 }
