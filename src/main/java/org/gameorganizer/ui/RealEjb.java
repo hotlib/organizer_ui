@@ -10,9 +10,6 @@ import org.gameorganizer.ui.entity.GameSessionRelation;
 import org.gameorganizer.ui.entity.Player;
 import org.gameorganizer.ui.entity.GameSession;
 
-//TODO zistit ako sa robia schemy
-//zistit ako robit dialect pre postgresql
-//zistit ci sa da on-the-fly vytvorit tabulka pre entitu
 
 @Stateful
 public class RealEjb {
@@ -20,7 +17,7 @@ public class RealEjb {
 	@PersistenceContext(unitName="testtest")
 	private EntityManager entityManeger;
 	
-	private long id = 5;
+	private long id = 6;
 	
 	
 	public void someCall() {
@@ -30,7 +27,6 @@ public class RealEjb {
 		p.setId(id);
 		
 		GameSession gs = new GameSession();
-		gs.setCreator(p);
 		gs.setId(id);
 		gs.setPlace("aaa");
 		
@@ -46,5 +42,11 @@ public class RealEjb {
 		entityManeger.persist(a);
 		return;
 	}
+	
+	public void someCall2() {
+		Attendant at = entityManeger.find(Attendant.class, 5l);
+		return;
+	}
+	
 	
 }

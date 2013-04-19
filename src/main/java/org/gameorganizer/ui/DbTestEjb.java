@@ -13,13 +13,8 @@ public class DbTestEjb {
 	public void testDb(){
 
 		realEjb.someCall();
-		
-		//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("testtest");
-//		EntityManager em = emf.createEntityManager();
-//		
-//		em.close();
-//		
-//		emf.close(); 
+		realEjb.someCall2();
+	
 		
 	}
 	

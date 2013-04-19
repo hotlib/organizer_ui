@@ -1,11 +1,13 @@
 package org.gameorganizer.ui.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
 
@@ -18,10 +20,10 @@ public class Player {
 	private String email;
 	
 	@Transient
-	private Set<GameSession> createdGameSession;
+	private Set<GameSession> createdGameSession = new HashSet<GameSession>();
 	
 	@Transient
-	private Set<GameSession> joinedGameSession;
+	private Set<GameSession> joinedGameSession = new HashSet<GameSession>();
 		
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="Player")
 	private Set <Attendant> attendants;
@@ -35,15 +37,11 @@ public class Player {
 	public Set<GameSession> getJoinedGameSession() {
 		return joinedGameSession;
 	}
-	public void setJoinedGameSession(Set<GameSession> joinedGameSession) {
-		this.joinedGameSession = joinedGameSession;
-	}
+
 	public Set<GameSession> getCreatedGameSession() {
 		return createdGameSession;
 	}
-	public void setCreatedGameSession(Set<GameSession> createdGameSession) {
-		this.createdGameSession = createdGameSession;
-	}
+
 	public Long getId() {
 		return id;
 	}
@@ -62,5 +60,19 @@ public class Player {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	@PostLoad
+	private void identifyGameSession() {
+		for (Attendant attendant : attendants) {
+			
+			if(GameSessionRelation.OWNER.equals(attendant.getRelation()))
+				createdGameSession.add(attendant.getGameSession());
+			else
+				joinedGameSession.add(attendant.getGameSession());
+			
+		}
+	}
+	
+	
 	
 }
