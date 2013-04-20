@@ -38,25 +38,35 @@
 
 
 		<div id="loginbox">
-			<h:form>
 
-				<h:panelGrid columns="2" rendered="#{!userAuthenticator.isLoggedIn}">
-					<h:outputText value="User name:" />
-					<h:inputText value="#{userAuthenticator.username}" />
-					<h:outputText value="Password:" />
-					<h:inputText value="#{userAuthenticator.password}" />
-					<h:commandButton value="Login"
-						action="#{userAuthenticator.authenticateUser}" render="loginbox" />
-				</h:panelGrid>
+			<h:panelGrid rendered="#{empty request.remoteUser}">
+				<form method="post" action="j_security_check" name="loginForm">
+					<h:panelGrid columns="2">
+						<h:outputLabel id="userNameLabel" for="j_username" value="Email:" />
+						<h:inputText id="j_username" autocomplete="off" />
+						<h:outputLabel id="passwordLabel" for="j_password"
+							value="Password:" />
+						<h:inputSecret id="j_password" autocomplete="off" />
+						<div />
+						<h:panelGroup>
+							<h:commandButton type="submit" value="Login" />
+							<h:commandButton type="reset" value="Clear" />
+						</h:panelGroup>
+					</h:panelGrid>
+				</form>
+			</h:panelGrid>
+
+			<h:panelGrid rendered="#{not empty request.remoteUser}">
+				<h:form>
+					<h:outputText value="logged in as #{request.remoteUser}" />
+
+					<h:commandButton value="Logout #{request.remoteUser}" 
+						action="#{userAuthenticator.logOut}" render="header, loginbox"/>
+
+				</h:form>
+			</h:panelGrid>
 
 
-				<h:outputText value="logged in as #{userAuthenticator.username}"
-					id="loginResult" rendered="#{userAuthenticator.isLoggedIn}" />
-
-				<h:commandButton value="Logout" action="#{userAuthenticator.logOut}"
-					render="loginbox" rendered="#{userAuthenticator.isLoggedIn}" />
-
-			</h:form>
 		</div>
 	</div>
 	<div id="mainNavigation">
@@ -70,8 +80,8 @@
     </h:outputStylesheet>
 
 		<h:form>
-			<rich:panelMenu style="width:200px" itemMode="server" groupMode="server"
-				groupExpandedLeftIcon="triangleUp"
+			<rich:panelMenu style="width:200px" itemMode="server"
+				groupMode="server" groupExpandedLeftIcon="triangleUp"
 				groupCollapsedLeftIcon="triangleDown"
 				topGroupExpandedRightIcon="chevronUp"
 				topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
@@ -93,7 +103,10 @@
 	</div>
 
 
+
+
 	<h:panelGrid id="contentPanel">
+		<h:outputLabel value="Welcome #{request.remoteUser}" />
 		<ui:insert name="content" />
 	</h:panelGrid>
 </h:body>

@@ -5,6 +5,25 @@
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Everything</web-resource-name>
+			<url-pattern>/app/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>player</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>file</realm-name>
+		<form-login-config>
+			<form-login-page>/app/welcome.xhtml</form-login-page>
+			<form-error-page>/error.xhtml</form-error-page>
+		</form-login-config>
+	</login-config>
+
+
 	<display-name>JavaServerFaces</display-name>
 
 	<context-param>
@@ -13,7 +32,7 @@
 	</context-param>
 
 	<welcome-file-list>
-		<welcome-file>welcome.xhtml</welcome-file>
+		<welcome-file>/app/welcome.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<servlet>
