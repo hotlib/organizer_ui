@@ -16,7 +16,7 @@
 				var="gameSession"
 				rendered="#{not empty gameSessionManager.gameSessions}" width="100%"
 				style="height:100%; width:100%;" selectionMode="single"
-				id="searchTable" onrowclick="">
+				id="searchTable">
 
 				<a4j:ajax execute="@this" event="selectionchange"
 					listener="#{gameSessionManager.selection}" render=":res" />
@@ -36,27 +36,43 @@
 					<f:facet name="header">Session begin</f:facet>
 					<h:outputText value="#{gameSession.sessionBegin}" />
 				</rich:column>
-				<rich:column>
+				<rich:column width="200px">
 					<f:facet name="header">Action</f:facet>
 
 					<a4j:commandLink value="#{gameSession.joined ? 'Leave' : 'Join'}"
 						style="float: left;" render="searchTable" execute="@this"
 						action="#{gameSession.flipJoined}" />
-				
+
+					<a4j:commandLink value="Edit message" style="float: right;"
+						render="editMessage" execute="@this"
+						oncomplete="#{rich:component('editMessage')}.show()"
+						rendered="#{gameSession.joined}">
+						<f:setPropertyActionListener
+							target="#{gameSessionManager.selectionItem}"
+							value="#{gameSession}" />
+					</a4j:commandLink>
+
 				</rich:column>
 			</rich:extendedDataTable>
 
-			<a4j:outputPanel ajaxRendered="true">
-
-				<h:panelGrid columns="3" id="updateInfo"
-					rendered="#{not empty gameSessionManager.selectionItem and gameSessionManager.selectionItem.joined}">
-					<h:outputText value="Game request:" />
+			<rich:popupPanel header="Edit session message" id="editMessage"
+				domElementAttachment="parent" width="400" height="170">
+				<h:panelGrid columns="2"
+					rendered="#{not empty gameSessionManager.selectionItem}">
+					<h:outputText value="Place:" />
 					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
-
-					<h:commandButton value="update" render="searchTable"
-						execute="updateInfo" />
-
+					<h:outputText value="Username:" />
+					<h:inputText value="#{gameSessionManager.selectionItem.username}" />
 				</h:panelGrid>
+				<a4j:commandButton value="Update" render="searchTable"
+					execute="editMessage"
+					oncomplete="#{rich:component('editMessage')}.hide();" />
+				<a4j:commandButton value="Cancel"
+					onclick="#{rich:component('editMessage')}.hide(); return false;" />
+			</rich:popupPanel>
+
+
+			<a4j:outputPanel ajaxRendered="true">
 
 				<rich:extendedDataTable
 					value="#{gameSessionManager.selectionItem.joinedUsers}"
