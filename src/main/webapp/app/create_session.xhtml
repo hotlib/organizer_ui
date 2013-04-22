@@ -25,7 +25,7 @@
 		<h:form id="sessionTable">
 			<a4j:commandButton value="Add"
 				action="#{gameSessionManager.createSession}"
-				render="sessionTable, :res"
+				render="sessionTable, joinedPlayers"
 				oncomplete="#{rich:component('editPane')}.show();" />
 
 			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
@@ -35,7 +35,7 @@
 				onready="selectTableRow(#{rich:component('createdSessions')}, #{not empty gameSessionManager.selectionItem}, #{gameSessionManager.selectedItemIndex})">
 
 				<a4j:ajax event="selectionchange"
-					listener="#{gameSessionManager.selection}" render=":res" />
+					listener="#{gameSessionManager.selection}" render="joinedPlayers" />
 
 				<rich:column width="550px">
 					<f:facet name="header">Place</f:facet>
@@ -116,13 +116,13 @@
 
 
 
-		<h:form id="res">
+		<h:form id="joinedPlayers">
 
 
 			<rich:extendedDataTable
 				value="#{gameSessionManager.selectionItem.joinedUsers}" var="player"
 				rendered="#{not empty gameSessionManager.selectionItem.joinedUsers}"
-				selectionMode="none" id="joinedPlayers">
+				selectionMode="none" >
 
 				<rich:column width="100px">
 					<f:facet name="header">Player name</f:facet>
