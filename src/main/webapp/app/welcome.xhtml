@@ -128,11 +128,11 @@
 	<h:form id="registerForm">
 		<h:panelGrid id="registerInput" columns="3" style="display:none;">
 			<h:outputText value="E-Mail:" />
-			<h:inputText id="email" required="true" requiredMessage="E-mail can not be blank" value="#{player.email}" /> <h:message for="email" style="color:red" />
+			<h:inputText id="email" validator="#{player.checkEmail}" required="true" requiredMessage="E-mail can not be blank" value="#{player.email}" /> <h:message for="email" style="color:red" />
 			<h:outputText value="Password:" />
 			<h:inputText id="passwd" required="true" requiredMessage="Your password has to contain at least 1 character" value="#{player.password}" /> <h:message for="passwd" style="color:red" />
 			<h:outputText value="Nickname:" />
-			<h:inputText id="nick" required="true" requiredMessage="Nick can not be blank" value="#{player.name}" /> <h:message for="nick" style="color:red" />
+			<h:inputText id="nick" validator="#{player.checkNickname}" required="true" requiredMessage="Nick can not be blank" value="#{player.name}" /> <h:message for="nick" style="color:red" />
 			<a4j:commandButton render="registerForm" value="Register" type="submit" execute="@form" oncomplete="hideOrShowRegistrationForm();"></a4j:commandButton>
 		</h:panelGrid>
 	</h:form>
