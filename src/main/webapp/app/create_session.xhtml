@@ -12,16 +12,27 @@
 	<ui:define name="content">
 		<h2>Include create</h2>
 
+		<script>
+  function selectTableRow(table, shouldSelect, rowIndex){
+   if(shouldSelect){
+	   table.selectRow(rowIndex); 
+	   table.setActiveRow(rowIndex);
+   }
+	  
+  }
+		</script>
+
 		<h:form id="sessionTable">
 			<a4j:commandButton value="Add"
 				action="#{gameSessionManager.createSession}"
 				render="sessionTable, :res"
-				oncomplete="#{rich:component('createdSessions')}.selectRow(#{gameSessionManager.lastIndex}); #{rich:component('createdSessions')}.setActiveRow(#{gameSessionManager.lastIndex});" />
+				oncomplete="#{rich:component('editPane')}.show();" />
 
 			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
 				var="gameSession"
 				rendered="#{not empty gameSessionManager.gameSessions}"
-				selectionMode="single" id="createdSessions">
+				selectionMode="single" id="createdSessions"
+				onready="selectTableRow(#{rich:component('createdSessions')}, #{not empty gameSessionManager.selectionItem}, #{gameSessionManager.selectedItemIndex})">
 
 				<a4j:ajax event="selectionchange"
 					listener="#{gameSessionManager.selection}" render=":res" />
@@ -44,14 +55,17 @@
 				<rich:column width="100px">
 					<f:facet name="header">Action</f:facet>
 
-					<a4j:commandLink value="Delete" style="float: right;" execute="@none" render="@none"
+					<a4j:commandLink value="Delete" style="float: right;"
+						execute="@none" render="@none"
 						onclick="#{rich:component('confirmPane')}.show()" />
 
-					<a4j:jsFunction name="deleteGameSession" action="#{gameSessionManager.deleteSession(gameSession)}"
+					<a4j:jsFunction name="deleteGameSession"
+						action="#{gameSessionManager.deleteSession}"
 						render="sessionTable" execute="@this"
 						oncomplete="#{rich:component('confirmPane')}.hide();" />
 
-					<a4j:commandLink value="Edit" style="float: left;" render="sessionTable" execute="@this"
+					<a4j:commandLink value="Edit" style="float: left;"
+						render="editPane" execute="@this"
 						oncomplete="#{rich:component('editPane')}.show()">
 						<f:setPropertyActionListener
 							target="#{gameSessionManager.selectionItem}"
@@ -65,11 +79,12 @@
 
 			<rich:popupPanel id="confirmPane" autosized="true">
 				<h:outputText
-					value="Are you sure you want to delete the game session? "/>
-				
+					value="Are you sure you want to delete the game session? " />
+
 				<a4j:commandButton value="Cancel" render="confirmPane"
 					onclick="#{rich:component('confirmPane')}.hide(); return false;" />
-				<a4j:commandButton value="Delete" onclick="deleteGameSession(); #{rich:component('confirmPane')}.hide(); return false;" />
+				<a4j:commandButton value="Delete"
+					onclick="deleteGameSession(); #{rich:component('confirmPane')}.hide(); return false;" />
 			</rich:popupPanel>
 
 
@@ -92,7 +107,7 @@
 				</h:panelGrid>
 				<a4j:commandButton value="Store" render="createdSessions"
 					action="#{gameSessionManager.save}" execute="editPane"
-					oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}" />
+					oncomplete="#{rich:component('editPane')}.hide();" />
 				<a4j:commandButton value="Cancel"
 					onclick="#{rich:component('editPane')}.hide(); return false;" />
 			</rich:popupPanel>

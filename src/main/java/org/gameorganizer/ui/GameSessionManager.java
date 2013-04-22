@@ -28,8 +28,15 @@ public class GameSessionManager implements Serializable {
 		this.dummy = dummy;
 	}
 
-	public int getLastIndex() {
-		return gameSessions.isEmpty() ? 0 : gameSessions.size() - 1;
+	public int getSelectedItemIndex() {
+		if(selectionItem == null){
+			return -1;
+		}
+		System.out.println("preselect");
+		int result = gameSessions.indexOf(selectionItem);
+		System.out.println("selected: " + result);
+		
+		return result;
 	}
 
 	public void setLastIndex(int lastIndex) {
@@ -100,8 +107,11 @@ public class GameSessionManager implements Serializable {
 		return null;
 	}
 
-	public void deleteSession(GameSession session) {
-		gameSessions.remove(session);
+	public void deleteSession() {
+		if(selectionItem == null)
+			return;
+		
+		gameSessions.remove(selectionItem);
 		selectionItem = null;
 	}
 

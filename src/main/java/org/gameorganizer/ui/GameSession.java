@@ -1,10 +1,11 @@
 package org.gameorganizer.ui;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GameSession {
+public class GameSession implements Serializable{
 	
 	private Date sessionBegin = new Date();
 	private String username = "Fritz";
@@ -65,7 +66,7 @@ public class GameSession {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof GameSession && username.equals(((GameSession)obj).getUsername()))
+		if(obj == this)
 			return true;
 		
 		return false;
