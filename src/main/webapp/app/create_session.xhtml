@@ -30,6 +30,11 @@
 					<f:facet name="header">Place</f:facet>
 					<h:outputText value="#{gameSession.place}" />
 				</rich:column>
+				<rich:column width="150px">
+					<f:facet name="header">Players</f:facet>
+					<h:outputText value="#{gameSession.joinedUsers.size()}" />
+				</rich:column>
+
 				<rich:column width="120px">
 					<f:facet name="header">Session begin</f:facet>
 					<h:outputText value="#{gameSession.sessionBegin}">
