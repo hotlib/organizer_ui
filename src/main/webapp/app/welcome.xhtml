@@ -34,9 +34,18 @@
 
 </h:head>
 <h:body bgcolor="white">
+	<script>
+		function hideOrShowRegistrationForm() {
+				var obj = document.getElementById("registerForm:registerInput");
+			if (obj.style.display === "none") {
+				obj.style.display = "block";
+			} else {
+				obj.style.display = "none";
+			}
+		}
+	</script>
+
 	<div id="header">
-
-
 		<div id="loginbox">
 
 			<h:panelGrid rendered="#{empty request.remoteUser}">
@@ -49,8 +58,13 @@
 						<h:inputSecret id="j_password" autocomplete="off" />
 						<div />
 						<h:panelGroup>
-							<h:commandButton type="submit" value="Login" outcome="welcome"/>
+							<h:commandButton type="submit" value="Login" outcome="welcome" />
+							<a4j:commandLink style="float: right;" value="Register"
+								execute="@none" onclick="hideOrShowRegistrationForm();" />
 						</h:panelGroup>
+
+
+
 					</h:panelGrid>
 				</form>
 			</h:panelGrid>
@@ -70,44 +84,60 @@
 	</div>
 	<div id="mainNavigation">
 
-		<h:panelGrid
-			rendered="#{not empty request.remoteUser}">
+		<h:panelGrid rendered="#{not empty request.remoteUser}">
 
 
-		<h:outputStylesheet>
+			<h:outputStylesheet>
         .cols {
         vertical-align: top;
         }
     </h:outputStylesheet>
 
-		<h:form>
-			<rich:panelMenu style="
-			width:200px" itemMode="server" groupMode="server"
-			groupExpandedLeftIcon="triangleUp"
-			groupCollapsedLeftIcon="triangleDown"
-			topGroupExpandedRightIcon="chevronUp"
-			topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
-			expandSingle="false">
-			<rich:panelMenuGroup label="Game Sessions" expanded="true">
-				<rich:panelMenuItem label="Create Session" action="create_session" />
-				<rich:panelMenuItem label="Search Sessions" action="search_session" />
+			<h:form>
+				<rich:panelMenu style="
+			width:200px" itemMode="server"
+					groupMode="server" groupExpandedLeftIcon="triangleUp"
+					groupCollapsedLeftIcon="triangleDown"
+					topGroupExpandedRightIcon="chevronUp"
+					topGroupCollapsedRightIcon="chevronDown" itemLeftIcon="disc"
+					expandSingle="false">
+					<rich:panelMenuGroup label="Game Sessions" expanded="true">
+						<rich:panelMenuItem label="Create Session" action="create_session" />
+						<rich:panelMenuItem label="Search Sessions"
+							action="search_session" />
 
-			</rich:panelMenuGroup>
-			<rich:panelMenuGroup label="Account settings" expanded="true">
-				<rich:panelMenuItem label="Username and password"
-					action="account_settings" />
-			</rich:panelMenuGroup>
+					</rich:panelMenuGroup>
+					<rich:panelMenuGroup label="Account settings" expanded="true">
+						<rich:panelMenuItem label="Username and password"
+							action="account_settings" />
+					</rich:panelMenuGroup>
 
-			</rich:panelMenu>
+				</rich:panelMenu>
 
 			</h:form>
 
 		</h:panelGrid>
 	</div>
 
-	<h:panelGrid id="contentPanel" rendered="#{not empty request.remoteUser}">
+	<h:panelGrid id="contentPanel"
+		rendered="#{not empty request.remoteUser}">
 		<ui:insert name="content" />
 	</h:panelGrid>
+
+
+	<h:form id="registerForm">
+		<h:panelGrid id="registerInput" columns="2" style="display:none;">
+			<h:outputText value="E-Mail:" />
+			<h:inputText value="#{player.email}" />
+			<h:outputText value="Password:" />
+			<h:inputText value="#{player.password}" />
+			<h:outputText value="Nickname (optional):" />
+			<h:inputText value="#{player.name}" />
+			<h:commandButton type="submit" value="Register"></h:commandButton>
+		</h:panelGrid>
+	</h:form>
+
+
 </h:body>
 </html>
 
