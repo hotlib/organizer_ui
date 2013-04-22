@@ -16,7 +16,7 @@
 				var="gameSession"
 				rendered="#{not empty gameSessionManager.gameSessions}" width="100%"
 				style="height:100%; width:100%;" selectionMode="single"
-				id="searchTable">
+				id="searchTable" onrowclick="">
 
 				<a4j:ajax execute="@this" event="selectionchange"
 					listener="#{gameSessionManager.selection}" render=":res" />
@@ -40,13 +40,13 @@
 					<f:facet name="header">Action</f:facet>
 
 					<a4j:commandLink value="#{gameSession.joined ? 'Leave' : 'Join'}"
-						style="float: left;" render="searchTable, additionalInfo" execute="@this"
+						style="float: left;" render="searchTable" execute="@this"
 						action="#{gameSession.flipJoined}" />
 				
 				</rich:column>
 			</rich:extendedDataTable>
 
-			<a4j:outputPanel id="additionalInfo">
+			<a4j:outputPanel ajaxRendered="true">
 
 				<h:panelGrid columns="3" id="updateInfo"
 					rendered="#{not empty gameSessionManager.selectionItem and gameSessionManager.selectionItem.joined}">
