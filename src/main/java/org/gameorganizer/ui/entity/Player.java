@@ -3,6 +3,7 @@ package org.gameorganizer.ui.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -16,8 +17,9 @@ public class Player {
 
 	@Id
 	private Long id;
-	private String name;
+	private String nickName;
 	private String email;
+	private String password;
 	
 	@Transient
 	private Set<GameSession> createdGameSession = new HashSet<GameSession>();
@@ -25,9 +27,21 @@ public class Player {
 	@Transient
 	private Set<GameSession> joinedGameSession = new HashSet<GameSession>();
 		
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="Player")
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="Player", cascade=CascadeType.ALL)
 	private Set <Attendant> attendants;
-	
+		
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 	public Set<Attendant> getAttendants() {
 		return attendants;
 	}
@@ -48,12 +62,7 @@ public class Player {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -62,6 +71,7 @@ public class Player {
 	}
 	
 	@PostLoad
+	@SuppressWarnings("unused")
 	private void identifyGameSession() {
 		for (Attendant attendant : attendants) {
 			

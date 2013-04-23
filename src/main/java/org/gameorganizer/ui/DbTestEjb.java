@@ -12,8 +12,8 @@ public class DbTestEjb {
 	
 	public void testDb(){
 
-		realEjb.someCall();
-		realEjb.someCall2();
+		
+		realEjb.someCall2(realEjb.someCall());
 	
 		
 	}
