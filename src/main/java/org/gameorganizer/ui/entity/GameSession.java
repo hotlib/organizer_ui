@@ -34,6 +34,9 @@ public class GameSession {
 		this.attendants = new HashSet<Attendant>();
 		this.attendants.add(at);
 	}
+	
+	public GameSession() {
+	}
 
 	public Set<Attendant> getAttendants() {
 		return attendants;
