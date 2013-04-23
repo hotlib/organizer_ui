@@ -35,8 +35,8 @@
 </h:head>
 <h:body bgcolor="white">
 	<script>
-		function hideOrShowRegistrationForm() {
-				var obj = document.getElementById("registerForm:registerInput");
+		function hideOrShow(elementId) {
+				var obj = document.getElementById(elementId);
 			if (obj.style.display === "none") {
 				obj.style.display = "block";
 			} else {
@@ -59,8 +59,8 @@
 						<div />
 						<h:panelGroup>
 							<h:commandButton type="submit" value="Login" outcome="welcome" />
-							<a4j:commandLink style="float: right;" value="Register"
-								execute="@none" onclick="hideOrShowRegistrationForm();" />
+							<a4j:commandLink id="registerlink" style="float: right;" value="Register"
+								execute="@none" onclick="hideOrShow('registerForm:registerInput');" />
 						</h:panelGroup>
 
 
@@ -124,6 +124,10 @@
 		<ui:insert name="content" />
 	</h:panelGrid>
 
+	<div id="registrationComplete" style="display:none;">
+		<p>Registration complete!</p>
+	</div>
+
 
 	<h:form id="registerForm">
 		<h:panelGrid id="registerInput" columns="3" style="display:none;">
@@ -133,7 +137,7 @@
 			<h:inputText id="passwd" required="true" requiredMessage="Your password has to contain at least 1 character" binding="#{password}" /> <h:message for="passwd" style="color:red" />
 			<h:outputText value="Nickname:" />
 			<h:inputText id="nick" validator="#{registrationValidation.checkNickname}" required="true" requiredMessage="Nick can not be blank" binding="#{nickName}" /> <h:message for="nick" style="color:red" />
-			<a4j:commandButton render="registerForm" value="Register" type="submit" execute="@form" action="#{playerService.registerPlayer(email.value, password.value, nickName.value)}" oncomplete="hideOrShowRegistrationForm();"/>
+			<a4j:commandButton render="registerForm" value="Register" type="submit" execute="@form" action="#{playerService.registerPlayer(email.value, password.value, nickName.value)}" oncomplete="hideOrShow('registrationComplete');hideOrShow('registerlink');"/>
 		</h:panelGrid>
 	</h:form>
 
