@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
@@ -16,6 +18,7 @@ import javax.persistence.Transient;
 public class Player {
 
 	@Id
+	@GeneratedValue
 	private Long id;
 	private String nickName;
 	private String email;

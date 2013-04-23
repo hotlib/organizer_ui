@@ -58,20 +58,6 @@ public class Player implements Serializable {
 		this.request = request;
 	}
 
-	public void checkEmail(FacesContext context, UIComponent component,
-			Object value) throws ValidatorException {
-
-		if (!username.equals(value))
-			throw new ValidatorException(new FacesMessage("you are not joe"));
-
-	}
-
-	public void checkNickname(FacesContext context, UIComponent component,
-			Object value) throws ValidatorException {
-
-		if (!username.equals(value))
-			throw new ValidatorException(new FacesMessage("you are not joe2"));
-
-	}
+	
 
 }
