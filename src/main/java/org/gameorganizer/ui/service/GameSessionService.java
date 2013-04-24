@@ -1,10 +1,13 @@
 package org.gameorganizer.ui.service;
 
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.gameorganizer.ui.entity.Attendant;
 import org.gameorganizer.ui.entity.GameSession;
@@ -72,6 +75,18 @@ public class GameSessionService {
 
 		entityManager.remove(attendant);
 	}
+
+	
+	public List<GameSession> getGameSessionsForPlayer(Player player, GameSessionRelation relation) {
+		//Query query = entityManager.createQuery("SELECT x FROM GameSession x WHERE x.attendants.player.email=:email AND x.attendants.relation=:relation");
+		Query query = entityManager.createQuery("SELECT x FROM GameSession x");
+		
+		
+		//query.setParameter("email", player.getEmail());
+		//query.setParameter("relation", relation);
+		return query.getResultList();
+	}
+
 	
 	
 }

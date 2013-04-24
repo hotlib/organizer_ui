@@ -1,5 +1,6 @@
 package org.gameorganizer.ui.entity;
 
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
@@ -28,6 +31,9 @@ public class GameSession {
 
 	private String place;
 
+	@Temporal(value=TemporalType.TIMESTAMP)
+	private Calendar sessionBegin;
+	
 	public GameSession(Player creator) {
 		this.creator = creator;
 		Attendant at = new Attendant(creator, this, GameSessionRelation.OWNER);
@@ -40,6 +46,16 @@ public class GameSession {
 
 	public Set<Attendant> getAttendants() {
 		return attendants;
+	}
+
+	
+	
+	public Calendar getSessionBegin() {
+		return sessionBegin;
+	}
+
+	public void setSessionBegin(Calendar sessionBegin) {
+		this.sessionBegin = sessionBegin;
 	}
 
 	public void setAttendants(Set<Attendant> attendants) {

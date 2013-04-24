@@ -30,7 +30,7 @@ public class PlayerService {
 		entityManager.persist(p);
 	}
 		
-	public boolean checkEmail(String email) {
+	public boolean isEmailRegistered(String email) {
 
 		Query query = entityManager.createQuery("SELECT x FROM Player x");
 		List <Player> players = query.getResultList();
@@ -54,6 +54,14 @@ public class PlayerService {
 		}
 		
 		return false;
+	}
+	
+	//TODO change login to either email or username
+	public Player getPlayer(String login){
+		Query query = entityManager.createQuery("SELECT x FROM Player x where x.nickName=:nickName");
+		query.setParameter("nickName", login);
+		return (Player) query.getSingleResult();
+		
 	}
 	
 }

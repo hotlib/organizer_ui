@@ -71,7 +71,7 @@
 
 			<h:panelGrid rendered="#{not empty request.remoteUser}">
 				<h:form>
-					<h:outputText value="logged in as #{request.remoteUser}" />
+					<h:outputText value="logged in as #{loggedInPlayer.player.password}" />
 
 					<h:commandButton value="Logout"
 						action="#{userAuthenticator.logOut}" render="header, loginbox" />

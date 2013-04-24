@@ -1,33 +1,37 @@
-package org.gameorganizer.ui;
+package org.gameorganizer.ui.view;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.gameorganizer.ui.entity.GameSession;
+import org.gameorganizer.ui.entity.GameSessionRelation;
+import org.gameorganizer.ui.entity.Player;
+import org.gameorganizer.ui.service.GameSessionService;
 import org.richfaces.component.UIExtendedDataTable;
 
-@Named("gameSessionManager2")
+@Named("gameSessionManager")
 @SessionScoped
-public class GameSessionManager implements Serializable {
+public class GameSessionController implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4421765006901163944L;
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();
 	private GameSession selectionItem;
-	private String dummy = "notin";
 	
+	@Inject
+	private LoggedInPlayer loggedInPlayer;
 	
+	@EJB
+	GameSessionService gameSessionService;
 	
-	public String getDummy() {
-		return dummy;
-	}
-
-	public void setDummy(String dummy) {
-		this.dummy = dummy;
-	}
-
 	public int getSelectedItemIndex() {
 		if(selectionItem == null){
 			return -1;
@@ -47,7 +51,6 @@ public class GameSessionManager implements Serializable {
 	}
 
 	public void setSelectionItem(GameSession selectionItem) {
-		System.out.println("choosing " + selectionItem.getUsername());
 		this.selectionItem = selectionItem;
 	}
 
@@ -69,42 +72,33 @@ public class GameSessionManager implements Serializable {
 		return;
 	}
 
-	public List<GameSession> getGameSessions() {
-		if (gameSessions.isEmpty())
-			init();
-
+	public List<GameSession> getCreatedGameSessions() {
+		gameSessions.clear();
+		gameSessions.addAll(gameSessionService.getGameSessionsForPlayer(loggedInPlayer.getPlayer(), GameSessionRelation.OWNER));
 		return gameSessions;
 	}
 
-	private void init() {
-		List<Player> joinedUsers = new LinkedList<Player>();
-		joinedUsers.add(new Player());
-		joinedUsers.add(new Player());
-		joinedUsers.add(new Player());
-		joinedUsers.add(new Player());
-
-		GameSession tmp;
-
-		for (int i = 0; i < 8; i++) {
-			tmp = new GameSession("A" + i);
-			tmp.setJoinedUsers(joinedUsers);
-			gameSessions.add(tmp);
-		}
-
+	public List<GameSession> getJoinedGameSessions() {
+		gameSessions.clear();
+		gameSessions.addAll(gameSessionService.getGameSessionsForPlayer(loggedInPlayer.getPlayer(), GameSessionRelation.JOINER));
+		return gameSessions;
 	}
 
+	
 	public String editItem(GameSession session) {
 		return null;
 	}
 
 	public Boolean isJoined(GameSession session) {
-		return session.getJoined();
+		return session.getAttendants().contains(loggedInPlayer.getPlayer());
 
 	}
 
-	public String flipJoined(GameSession session) {
-		session.flipJoined();
-		return null;
+	public void flipJoined(GameSession gameSession) {
+		if(isJoined(gameSession))
+			gameSessionService.leaveGameSession(loggedInPlayer.getPlayer(), gameSession);
+		else
+			gameSessionService.joinGameSession(loggedInPlayer.getPlayer(), gameSession);		
 	}
 
 	public void deleteSession() {
@@ -116,14 +110,19 @@ public class GameSessionManager implements Serializable {
 	}
 
 	public void createSession() {
-		GameSession g = new GameSession("XXX");
-		gameSessions.add(g);
-		selectionItem = g;
-	}
-	
-	public void save() {
-		System.out.println("called save");
 
+		GameSession gs = gameSessionService.createGameSession(loggedInPlayer.getPlayer());
+		gameSessions.add(gs);
+		selectionItem = gs;
 	}
 	
+	//TODO rename and wtf
+	public void save() {
+		gameSessionService.update(selectionItem);
+	}
+	
+	public List<GameSession> getGameSessions() {
+		return getCreatedGameSessions();
+	}
+		
 }

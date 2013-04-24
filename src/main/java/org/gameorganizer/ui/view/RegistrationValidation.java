@@ -24,7 +24,7 @@ public class RegistrationValidation {
 	public void checkEmail(FacesContext context, UIComponent component,
 			Object value) throws ValidatorException {
 
-		if (playerService.checkEmail((String) value))
+		if (playerService.isEmailRegistered((String) value))
 			throw new ValidatorException(new FacesMessage("E-mail " + value
 					+ " already exists"));
 
