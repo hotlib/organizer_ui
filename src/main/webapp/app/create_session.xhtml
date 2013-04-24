@@ -26,7 +26,7 @@
 			<a4j:commandButton value="Add"
 				action="#{gameSessionManager.createSession}"
 				render="sessionTable, joinedPlayers"
-				oncomplete="#{rich:component('editPane')}.show();alert('#{gameSessionManager.dummy}');" />
+				oncomplete="#{rich:component('editPane')}.show();" />
 
 			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
 				var="gameSession"
