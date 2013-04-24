@@ -1,6 +1,5 @@
 package org.gameorganizer.ui.service;
 
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,80 +16,95 @@ import org.gameorganizer.ui.entity.Player;
 
 @Named
 @Stateless
-public class GameSessionService implements Serializable{
+public class GameSessionService implements Serializable {
 
-	@PersistenceContext(unitName="testtest")
+	@PersistenceContext(unitName = "testtest")
 	private EntityManager entityManager;
-		
+
 	public GameSession createGameSession(Player player) {
-		
-		GameSession gs = new GameSession(player);		
-		
+
+		GameSession gs = new GameSession(player);
+
 		entityManager.persist(gs);
-		
+
 		return gs;
 	}
-	
-	public GameSession update(GameSession gameSession){
+
+	public GameSession update(GameSession gameSession) {
 		return entityManager.merge(gameSession);
 	}
-	
-	public void deleteGameSession(GameSession gameSession){
+
+	public void deleteGameSession(GameSession gameSession) {
 		gameSession = entityManager.merge(gameSession);
-		
-		for (Attendant attendant : gameSession.getAttendants()) { 
-			
+
+		for (Attendant attendant : gameSession.getAttendants()) {
+
 			entityManager.remove(entityManager.merge(attendant));
 		}
-		
+
 		entityManager.remove(gameSession);
 	}
-	
-	public void updateSessionMessage(String playerEmail, String sessionMessage, GameSession gameSession) {
+
+	public void updateSessionMessage(String playerEmail, String sessionMessage,
+			GameSession gameSession) {
 		Attendant attendantToBeUpdated = null;
-		
+
 		attendantToBeUpdated = findAttendantWithEmail(playerEmail, gameSession);
-		
+
 		attendantToBeUpdated.setSessionMessage(sessionMessage);
-		
+
 		entityManager.merge(attendantToBeUpdated);
-		
+
 	}
 
-	//TODO has to find attendats from DB because gameSession.getAttendants() might be empty
+	// TODO has to find attendats from DB because gameSession.getAttendants()
+	// might be empty
 	private Attendant findAttendantWithEmail(String playerEmail,
 			GameSession gameSession) {
-		
-		for (Attendant attendant : gameSession.getAttendants()) { 
-			if(attendant.getPlayer().getEmail().equals(playerEmail))
+
+		for (Attendant attendant : gameSession.getAttendants()) {
+			if (attendant.getPlayer().getEmail().equals(playerEmail))
 				return attendant;
 		}
-		throw new RuntimeException("AttendantWithEmail not found, email: " + playerEmail);
+		throw new RuntimeException("AttendantWithEmail not found, email: "
+				+ playerEmail);
 	}
-	
-	
+
 	public void joinGameSession(Player player, GameSession gameSession) {
-		Attendant at = new Attendant(player, gameSession, GameSessionRelation.JOINER);
-		
+		Attendant at = new Attendant(player, gameSession,
+				GameSessionRelation.JOINER);
+
 		entityManager.persist(at);
 	}
-	
+
 	public void leaveGameSession(Player player, GameSession gameSession) {
-		Attendant attendant = findAttendantWithEmail(player.getEmail(), gameSession);
+		// Attendant attendant = findAttendantWithEmail(player.getEmail(),
+		// gameSession);
+
+		Attendant attendant = null;
+		
+		List<GameSession> sessions = getGameSessionsForPlayer(player,
+				GameSessionRelation.OWNER);
+
+		for (GameSession gs : sessions)
+			for (Attendant at : gs.getAttendants()) {
+				if (gs.equals(gameSession)
+						&& at.getPlayer().equals(player))
+					attendant = at;
+			}
+
 		entityManager.remove(entityManager.merge(attendant));
 	}
 
-	
-	public List<GameSession> getGameSessionsForPlayer(Player player, GameSessionRelation relation) {
-		//Query query = entityManager.createQuery("SELECT x FROM GameSession x WHERE x.attendants.player.email=:email AND x.attendants.relation=:relation");
+	public List<GameSession> getGameSessionsForPlayer(Player player,
+			GameSessionRelation relation) {
+		// Query query =
+		// entityManager.createQuery("SELECT x FROM GameSession x WHERE x.attendants.player.email=:email AND x.attendants.relation=:relation");
 		Query query = entityManager.createQuery("SELECT x FROM GameSession x");
-		
-		
-		//query.setParameter("email", player.getEmail());
-		//query.setParameter("relation", relation);
+
+		// query.setParameter("email", player.getEmail());
+		// query.setParameter("relation", relation);
 		return query.getResultList();
 	}
 
-	
-	
 }
