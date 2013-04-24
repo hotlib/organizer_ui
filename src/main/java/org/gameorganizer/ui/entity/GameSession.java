@@ -2,6 +2,8 @@ package org.gameorganizer.ui.entity;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -72,8 +74,10 @@ public class GameSession {
 		this.id = id;
 	}
 
-	public Set<Player> getJoinedPlayers() {
-		return joinedPlayers;
+	public List<Player> getJoinedPlayers() {
+		List <Player>result = new LinkedList<Player>();
+		result.addAll(joinedPlayers);
+		return result;
 	}
 
 	public Player getCreator() {
@@ -91,6 +95,7 @@ public class GameSession {
 	@PostLoad
 	@SuppressWarnings("unused")
 	private void identifyPlayersAccordingToRelation() {
+		joinedPlayers.clear();
 		for (Attendant attendant : attendants) {
 
 			if (GameSessionRelation.OWNER.equals(attendant.getRelation()))

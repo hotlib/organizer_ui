@@ -9,7 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
-@Named
+@Named("player2")
 @SessionScoped
 public class Player implements Serializable {
 	private String username = "joe";

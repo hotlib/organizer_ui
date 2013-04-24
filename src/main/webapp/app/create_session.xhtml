@@ -118,18 +118,15 @@
 
 
 			<rich:extendedDataTable
-				value="#{gameSessionManager.selectionItem.joinedPlayers}" var="player"
+				value="#{gameSessionManager.selectionItem.joinedPlayers}" var="pl"
 				rendered="#{not empty gameSessionManager.selectionItem.joinedPlayers}"
 				selectionMode="none" >
 
-				<rich:column width="100px">
+				<rich:column width="700px">
 					<f:facet name="header">Player name</f:facet>
-					<h:outputText value="#{player.nickName}" />
+					<h:outputText value="#{pl.nickName}" />
 				</rich:column>
-				<rich:column width="650px">
-					<f:facet name="header">Recommendation</f:facet>
-					<h:outputText value="#{player.sessionMessage}" />
-				</rich:column>
+				
 			</rich:extendedDataTable>
 		</h:form>
 
