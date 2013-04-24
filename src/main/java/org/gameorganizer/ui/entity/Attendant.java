@@ -2,6 +2,7 @@ package org.gameorganizer.ui.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -9,6 +10,7 @@ import javax.persistence.ManyToOne;
 public class Attendant {
 
 	@Id
+	@GeneratedValue
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)

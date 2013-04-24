@@ -43,7 +43,7 @@
 				</rich:column>
 				<rich:column width="150px">
 					<f:facet name="header">Players</f:facet>
-					<h:outputText value="#{gameSession.joinedUsers.size()}" />
+					<h:outputText value="#{gameSession.joinedPlayers.size()}" />
 				</rich:column>
 
 				<rich:column width="120px">
@@ -94,8 +94,6 @@
 					rendered="#{not empty gameSessionManager.selectionItem}">
 					<h:outputText value="Place:" />
 					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
-					<h:outputText value="Username:" />
-					<h:inputText value="#{gameSessionManager.selectionItem.username}" />
 					<h:outputText value="Date and time:" />
 					<rich:calendar locale="de/DE" popup="true"
 						value="#{gameSessionManager.selectionItem.sessionBegin}"
@@ -120,17 +118,17 @@
 
 
 			<rich:extendedDataTable
-				value="#{gameSessionManager.selectionItem.joinedUsers}" var="player"
-				rendered="#{not empty gameSessionManager.selectionItem.joinedUsers}"
+				value="#{gameSessionManager.selectionItem.joinedPlayers}" var="player"
+				rendered="#{not empty gameSessionManager.selectionItem.joinedPlayers}"
 				selectionMode="none" >
 
 				<rich:column width="100px">
 					<f:facet name="header">Player name</f:facet>
-					<h:outputText value="#{player.username}" />
+					<h:outputText value="#{player.nickName}" />
 				</rich:column>
 				<rich:column width="650px">
 					<f:facet name="header">Recommendation</f:facet>
-					<h:outputText value="#{player.request}" />
+					<h:outputText value="#{player.sessionMessage}" />
 				</rich:column>
 			</rich:extendedDataTable>
 		</h:form>

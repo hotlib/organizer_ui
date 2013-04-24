@@ -7,17 +7,17 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
 public class GameSession {
 
 	@Id
+	@GeneratedValue
 	private Long id;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "GameSession", cascade = CascadeType.ALL)
@@ -31,7 +31,8 @@ public class GameSession {
 
 	private String place;
 
-	@Temporal(value=TemporalType.TIMESTAMP)
+	//@Temporal(value=TemporalType.TIMESTAMP)
+	@Transient
 	private Calendar sessionBegin;
 	
 	public GameSession(Player creator) {
@@ -97,6 +98,14 @@ public class GameSession {
 				joinedPlayers.add(attendant.getPlayer());
 
 		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(id == null)
+			return true;
+		
+		return id.equals(((GameSession)obj).getId());
 	}
 
 }

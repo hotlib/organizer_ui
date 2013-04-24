@@ -36,8 +36,11 @@ public class GameSessionService implements Serializable{
 	}
 	
 	public void deleteGameSession(GameSession gameSession){
+		gameSession = entityManager.merge(gameSession);
+		
 		for (Attendant attendant : gameSession.getAttendants()) { 
-			entityManager.remove(attendant);
+			
+			entityManager.remove(entityManager.merge(attendant));
 		}
 		
 		entityManager.remove(gameSession);

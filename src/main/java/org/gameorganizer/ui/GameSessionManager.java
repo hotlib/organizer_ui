@@ -11,7 +11,7 @@ import javax.inject.Named;
 
 import org.richfaces.component.UIExtendedDataTable;
 
-@Named
+@Named("gameSessionManager2")
 @SessionScoped
 public class GameSessionManager implements Serializable {
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();

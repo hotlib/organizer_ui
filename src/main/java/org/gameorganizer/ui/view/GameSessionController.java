@@ -16,12 +16,10 @@ import org.gameorganizer.ui.entity.Player;
 import org.gameorganizer.ui.service.GameSessionService;
 import org.richfaces.component.UIExtendedDataTable;
 
-@Named
+@Named("gameSessionManager")
 @SessionScoped
 public class GameSessionController implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -4421765006901163944L;
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();
 	private GameSession selectionItem;
@@ -55,6 +53,7 @@ public class GameSessionController implements Serializable {
 	}
 
 	public void selection(AjaxBehaviorEvent event) {
+		System.out.println("new select");
 		if(gameSessions.isEmpty())
 			return;
 		
@@ -105,6 +104,8 @@ public class GameSessionController implements Serializable {
 		if(selectionItem == null)
 			return;
 		
+		gameSessionService.deleteGameSession(selectionItem);
+
 		gameSessions.remove(selectionItem);
 		selectionItem = null;
 	}
