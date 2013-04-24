@@ -16,7 +16,7 @@ import org.gameorganizer.ui.entity.Player;
 import org.gameorganizer.ui.service.GameSessionService;
 import org.richfaces.component.UIExtendedDataTable;
 
-@Named("gameSessionManager")
+@Named
 @SessionScoped
 public class GameSessionController implements Serializable {
 	/**

@@ -26,7 +26,7 @@
 			<a4j:commandButton value="Add"
 				action="#{gameSessionManager.createSession}"
 				render="sessionTable, joinedPlayers"
-				oncomplete="#{rich:component('editPane')}.show();" />
+				oncomplete="#{rich:component('editPane')}.show();alert('#{gameSessionManager.dummy}');" />
 
 			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
 				var="gameSession"
@@ -43,7 +43,7 @@
 				</rich:column>
 				<rich:column width="150px">
 					<f:facet name="header">Players</f:facet>
-					<h:outputText value="#{gameSession.joinedPlayers.size()}" />
+					<h:outputText value="#{gameSession.joinedUsers.size()}" />
 				</rich:column>
 
 				<rich:column width="120px">

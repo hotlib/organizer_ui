@@ -11,13 +11,12 @@ import javax.inject.Named;
 
 import org.richfaces.component.UIExtendedDataTable;
 
-@Named("gameSessionManager2")
+@Named
 @SessionScoped
 public class GameSessionManager implements Serializable {
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();
 	private GameSession selectionItem;
 	private String dummy = "notin";
-	
 	
 	
 	public String getDummy() {
@@ -66,6 +65,8 @@ public class GameSessionManager implements Serializable {
 			else
 				selectionItem = gameSessions.get(index);
 		}
+		
+		
 		return;
 	}
 

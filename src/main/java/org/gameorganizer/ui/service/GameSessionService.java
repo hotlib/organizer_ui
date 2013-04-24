@@ -14,7 +14,7 @@ import org.gameorganizer.ui.entity.GameSession;
 import org.gameorganizer.ui.entity.GameSessionRelation;
 import org.gameorganizer.ui.entity.Player;
 
-@Named("gameService")
+@Named
 @Stateless
 public class GameSessionService {
 
