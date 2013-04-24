@@ -1,5 +1,6 @@
 package org.gameorganizer.ui.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -16,7 +17,7 @@ import org.gameorganizer.ui.entity.Player;
 
 @Named("playerService")
 @Stateless
-public class PlayerService {
+public class PlayerService implements Serializable{
 	@PersistenceContext(unitName="testtest")
 	private EntityManager entityManager;
 	

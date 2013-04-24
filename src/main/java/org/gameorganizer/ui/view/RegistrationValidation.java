@@ -1,5 +1,6 @@
 package org.gameorganizer.ui.view;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -16,7 +17,7 @@ import org.gameorganizer.ui.service.PlayerService;
 
 @Named
 @RequestScoped
-public class RegistrationValidation {
+public class RegistrationValidation implements Serializable{
 	
 	@EJB
 	PlayerService playerService;
