@@ -34,7 +34,7 @@ public class RegistrationValidation implements Serializable{
 	public void checkNickname(FacesContext context, UIComponent component,
 			Object value) throws ValidatorException {
 
-		if (playerService.checkNickname((String) value))
+		if (playerService.isNickNameRegistered((String) value))
 			throw new ValidatorException(new FacesMessage("Nickname " + value
 					+ " already exists"));
 

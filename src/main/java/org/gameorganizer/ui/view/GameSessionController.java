@@ -10,6 +10,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.gameorganizer.ui.entity.Attendant;
 import org.gameorganizer.ui.entity.GameSession;
 import org.gameorganizer.ui.entity.GameSessionRelation;
 import org.gameorganizer.ui.entity.Player;
@@ -23,21 +24,21 @@ public class GameSessionController implements Serializable {
 	private static final long serialVersionUID = -4421765006901163944L;
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();
 	private GameSession selectionItem;
-	
+
 	@Inject
 	private LoggedInPlayer loggedInPlayer;
-	
+
 	@EJB
 	GameSessionService gameSessionService;
-	
+
 	public int getSelectedItemIndex() {
-		if(selectionItem == null){
+		if (selectionItem == null) {
 			return -1;
 		}
 		System.out.println("preselect");
 		int result = gameSessions.indexOf(selectionItem);
 		System.out.println("selected: " + result);
-		
+
 		return result;
 	}
 
@@ -54,12 +55,13 @@ public class GameSessionController implements Serializable {
 
 	public void selection(AjaxBehaviorEvent event) {
 		System.out.println("new select");
-		if(gameSessions.isEmpty())
+		if (gameSessions.isEmpty())
 			return;
-		
+
 		UIExtendedDataTable dataTable = (UIExtendedDataTable) event
 				.getComponent();
-		if (dataTable.getSelection() != null && !dataTable.getSelection().isEmpty()) {
+		if (dataTable.getSelection() != null
+				&& !dataTable.getSelection().isEmpty()) {
 			Integer index = (Integer) dataTable.getSelection().iterator()
 					.next();
 
@@ -73,45 +75,56 @@ public class GameSessionController implements Serializable {
 
 	public List<GameSession> getCreatedGameSessions() {
 		gameSessions.clear();
-		gameSessions.addAll(gameSessionService.getGameSessionsForPlayer(loggedInPlayer.getPlayer(), GameSessionRelation.OWNER));
+		gameSessions.addAll(gameSessionService.getGameSessionsForPlayer(
+				loggedInPlayer.getPlayer(), GameSessionRelation.OWNER));
 		return gameSessions;
 	}
 
 	public List<GameSession> getJoinedGameSessions() {
 		gameSessions.clear();
-		gameSessions.addAll(gameSessionService.getGameSessionsForPlayer(loggedInPlayer.getPlayer(), GameSessionRelation.JOINER));
+		gameSessions.addAll(gameSessionService.getGameSessionsForPlayer(
+				loggedInPlayer.getPlayer(), GameSessionRelation.JOINER));
 		return gameSessions;
 	}
 
-	
 	public String editItem(GameSession session) {
 		return null;
 	}
 
 	public Boolean isJoined(GameSession session) {
-		List<GameSession> sessions = gameSessionService.getGameSessionsForPlayer(loggedInPlayer.getPlayer(), GameSessionRelation.JOINER);
-		
-		for (GameSession gameSession : sessions) {
-			if(gameSession.equals(session) && gameSession.getAttendants().contains(loggedInPlayer.getPlayer()))
-				return Boolean.TRUE;
-		}
-		
+		List<GameSession> sessions = gameSessionService
+				.getGameSessionsForPlayer(loggedInPlayer.getPlayer(),
+						GameSessionRelation.OWNER); // TODO
+													// GameSessionRelation.JOINER
+
+		for (GameSession gameSession : sessions)
+			for (Attendant attendant : gameSession.getAttendants()) {
+				if (gameSession.equals(session)
+						&& attendant.getPlayer().equals(
+								loggedInPlayer.getPlayer()))
+					return Boolean.TRUE;
+			}
+
 		return Boolean.FALSE;
 
 	}
 
 	public void flipJoined(GameSession gameSession) {
-		System.out.println("player: " + loggedInPlayer.getPlayer().getNickName()  + " logged in: " + isJoined(gameSession));
-		if(isJoined(gameSession))
-			gameSessionService.leaveGameSession(loggedInPlayer.getPlayer(), gameSession);
+//		System.out.println("player: "
+//				+ loggedInPlayer.getPlayer().getNickName() + " logged in: "
+//				+ isJoined(gameSession));
+		if (isJoined(gameSession))
+			gameSessionService.leaveGameSession(loggedInPlayer.getPlayer(),
+					gameSession);
 		else
-			gameSessionService.joinGameSession(loggedInPlayer.getPlayer(), gameSession);		
+			gameSessionService.joinGameSession(loggedInPlayer.getPlayer(),
+					gameSession);
 	}
 
 	public void deleteSession() {
-		if(selectionItem == null)
+		if (selectionItem == null)
 			return;
-		
+
 		gameSessionService.deleteGameSession(selectionItem);
 
 		gameSessions.remove(selectionItem);
@@ -120,18 +133,19 @@ public class GameSessionController implements Serializable {
 
 	public void createSession() {
 
-		GameSession gs = gameSessionService.createGameSession(loggedInPlayer.getPlayer());
+		GameSession gs = gameSessionService.createGameSession(loggedInPlayer
+				.getPlayer());
 		gameSessions.add(gs);
 		selectionItem = gs;
 	}
-	
-	//TODO rename and wtf
+
+	// TODO rename and wtf
 	public void save() {
 		gameSessionService.update(selectionItem);
 	}
-	
+
 	public List<GameSession> getGameSessions() {
 		return getCreatedGameSessions();
 	}
-		
+
 }

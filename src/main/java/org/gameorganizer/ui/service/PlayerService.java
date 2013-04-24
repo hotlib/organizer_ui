@@ -44,7 +44,7 @@ public class PlayerService implements Serializable{
 		return false;
 	}
 
-	public boolean checkNickname(String nickName)  {
+	public boolean isNickNameRegistered(String nickName)  {
 
 		Query query = entityManager.createQuery("SELECT x FROM Player x");
 		List <Player> players = query.getResultList();

@@ -57,6 +57,7 @@ public class GameSessionService implements Serializable{
 		
 	}
 
+	//TODO has to find attendats from DB because gameSession.getAttendants() might be empty
 	private Attendant findAttendantWithEmail(String playerEmail,
 			GameSession gameSession) {
 		
