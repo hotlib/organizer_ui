@@ -1,6 +1,6 @@
 package org.gameorganizer.ui.entity;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
@@ -31,9 +33,8 @@ public class GameSession {
 
 	private String place;
 
-	//@Temporal(value=TemporalType.TIMESTAMP)
-	@Transient
-	private Calendar sessionBegin;
+	@Temporal(value=TemporalType.TIMESTAMP)
+	private Date sessionBegin;
 	
 	public GameSession(Player creator) {
 		this.creator = creator;
@@ -51,11 +52,11 @@ public class GameSession {
 
 	
 	
-	public Calendar getSessionBegin() {
+	public Date getSessionBegin() {
 		return sessionBegin;
 	}
 
-	public void setSessionBegin(Calendar sessionBegin) {
+	public void setSessionBegin(Date sessionBegin) {
 		this.sessionBegin = sessionBegin;
 	}
 
