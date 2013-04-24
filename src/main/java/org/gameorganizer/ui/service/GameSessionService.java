@@ -76,8 +76,7 @@ public class GameSessionService implements Serializable{
 	
 	public void leaveGameSession(Player player, GameSession gameSession) {
 		Attendant attendant = findAttendantWithEmail(player.getEmail(), gameSession);
-
-		entityManager.remove(attendant);
+		entityManager.remove(entityManager.merge(attendant));
 	}
 
 	

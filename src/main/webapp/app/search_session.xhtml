@@ -26,7 +26,7 @@
 				</rich:column>
 				<rich:column width="100px">
 					<f:facet name="header">Players</f:facet>
-					<h:outputText value="#{gameSession.joinedUsers.size()}" />
+					<h:outputText value="#{gameSession.joinedPlayers.size()}" />
 				</rich:column>
 				<rich:column>
 					<f:facet name="header">Session begin</f:facet>
@@ -35,14 +35,14 @@
 				<rich:column width="200px">
 					<f:facet name="header">Action</f:facet>
 
-					<a4j:commandLink value="#{gameSession.joined ? 'Leave' : 'Join'}"
+					<a4j:commandLink value="#{gameSessionManager.isJoined(gameSession) ? 'Leave' : 'Join'}"
 						style="float: left;" render="searchTable" execute="@this"
-						action="#{gameSession.flipJoined}" />
+						action="#{gameSessionManager.flipJoined(gameSession)}" />
 
 					<a4j:commandLink value="Edit message" style="float: right;"
 						render="editMessage" execute="@this"
 						oncomplete="#{rich:component('editMessage')}.show()"
-						rendered="#{gameSession.joined}">
+						rendered="#{gameSessionManager.isJoined(gameSession)}">
 						<f:setPropertyActionListener
 							target="#{gameSessionManager.selectionItem}"
 							value="#{gameSession}" />
@@ -55,10 +55,8 @@
 				domElementAttachment="parent" width="400" height="170">
 				<h:panelGrid columns="2"
 					rendered="#{not empty gameSessionManager.selectionItem}">
-					<h:outputText value="Place:" />
+					<h:outputText value="Session Message:" />
 					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
-					<h:outputText value="Username:" />
-					<h:inputText value="#{gameSessionManager.selectionItem.username}" />
 				</h:panelGrid>
 				<a4j:commandButton value="Update" render="searchTable"
 					execute="editMessage"
@@ -71,18 +69,18 @@
 			<a4j:outputPanel ajaxRendered="true">
 
 				<rich:extendedDataTable
-					value="#{gameSessionManager.selectionItem.joinedUsers}"
+					value="#{gameSessionManager.selectionItem.joinedPlayers}"
 					var="player"
-					rendered="#{not empty gameSessionManager.selectionItem.joinedUsers}"
+					rendered="#{not empty gameSessionManager.selectionItem.joinedPlayers}"
 					selectionMode="none" id="joinedPlayers">
 
 					<rich:column width="100px">
 						<f:facet name="header">Player name</f:facet>
-						<h:outputText value="#{player.username}" />
+						<h:outputText value="#{player.nickName}" />
 					</rich:column>
 					<rich:column width="650px">
 						<f:facet name="header">Recommendation</f:facet>
-						<h:outputText value="#{player.request}" />
+						<h:outputText value="#{player.nickName}" />
 					</rich:column>
 				</rich:extendedDataTable>
 

@@ -86,6 +86,9 @@ public class Player {
 		}
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		return this.email.equals(((Player)obj).getEmail());
+	}
 	
 }
