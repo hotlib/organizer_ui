@@ -73,5 +73,10 @@ public class Attendant {
 	public void setSessionMessage(String sessionMessage) {
 		this.sessionMessage = sessionMessage;
 	}
+	
+	@Override
+	public String toString() {
+	return "Id: " + id + " sessionMessage: " + sessionMessage;
+	}
 
 }

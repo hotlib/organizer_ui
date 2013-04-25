@@ -90,7 +90,7 @@ public class GameSessionService implements Serializable {
 
 	public Boolean hasJoined(Player player, GameSession gameSession) {
 		Query query = null;
-		
+
 		query = entityManager
 				.createQuery("SELECT x.id FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.gameSession=:gameSession");
 
@@ -121,5 +121,32 @@ public class GameSessionService implements Serializable {
 		return query.getResultList();
 
 	}
+
+	public String getSessionMessage(Player player, GameSession gameSession) {
+		Query query = null;
+
+		query = entityManager
+				.createQuery("SELECT y.sessionMessage FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.gameSession=:gameSession");
+
+		query.setParameter("email", player.getEmail());
+		query.setParameter("gameSession", gameSession);
+		
+		return (String) query.getSingleResult();
+	}
+	
+	public void setSessionMessage(Player player, GameSession gameSession, String sessionMessage) {
+		Query query = null;
+
+		query = entityManager
+				.createQuery("SELECT x FROM Attendant x WHERE x.player.email=:email AND x.gameSession=:gameSession");
+
+		query.setParameter("email", player.getEmail());
+		query.setParameter("gameSession", gameSession);
+		
+		Attendant at = (Attendant) query.getSingleResult();
+		
+		at.setSessionMessage(sessionMessage);
+	}
+	
 
 }

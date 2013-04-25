@@ -56,7 +56,7 @@
 				<h:panelGrid columns="2"
 					rendered="#{not empty gameSessionManager.selectionItem}">
 					<h:outputText value="Session Message:" />
-					<h:inputText value="#{gameSessionManager.selectionItem.place}" />
+					<h:inputText value="#{gameSessionManager.sessionMessage}" />
 				</h:panelGrid>
 				<a4j:commandButton value="Update" render="searchTable"
 					execute="editMessage"

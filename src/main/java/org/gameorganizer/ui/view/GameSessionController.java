@@ -10,10 +10,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.gameorganizer.ui.entity.Attendant;
 import org.gameorganizer.ui.entity.GameSession;
 import org.gameorganizer.ui.entity.GameSessionRelation;
-import org.gameorganizer.ui.entity.Player;
 import org.gameorganizer.ui.service.GameSessionService;
 import org.richfaces.component.UIExtendedDataTable;
 
@@ -31,7 +29,7 @@ public class GameSessionController implements Serializable {
 
 	@EJB
 	GameSessionService gameSessionService;
-
+	
 	public int getSelectedItemIndex() {
 		if (selectionItem == null) {
 			return -1;
@@ -138,5 +136,13 @@ public class GameSessionController implements Serializable {
 	public List<GameSession> getGameSessions() {
 		return getCreatedGameSessions();
 	}
-
+	
+	public String getSessionMessage() {
+		return gameSessionService.getSessionMessage(loggedInPlayer.getPlayer(), selectionItem);
+	}
+	
+	public void setSessionMessage(String sessionMessage) {
+		gameSessionService.setSessionMessage(loggedInPlayer.getPlayer(), selectionItem, sessionMessage);
+	}
+	
 }
