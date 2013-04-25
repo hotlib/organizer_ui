@@ -96,26 +96,14 @@ public class GameSessionController implements Serializable {
 	}
 
 	public Boolean isJoined(GameSession session) {
-		List<GameSession> sessions = gameSessionService
-				.getGameSessionsForPlayer(loggedInPlayer.getPlayer(),
-						GameSessionRelation.JOINER); 
-
-		for (GameSession gameSession : sessions)
-			for (Attendant attendant : gameSession.getAttendants()) {
-				if (gameSession.equals(session)
-						&& attendant.getPlayer().equals(
-								loggedInPlayer.getPlayer()))
-					return Boolean.TRUE;
-			}
-
-		return Boolean.FALSE;
-
+		
+		return gameSessionService.hasJoined(loggedInPlayer.getPlayer(), session);
 	}
 
 	public void flipJoined(GameSession gameSession) {
-//		System.out.println("player: "
-//				+ loggedInPlayer.getPlayer().getNickName() + " logged in: "
-//				+ isJoined(gameSession));
+		System.out.println("player: "
+				+ loggedInPlayer.getPlayer().getNickName() + " logged in: "
+				+ isJoined(gameSession));
 		if (isJoined(gameSession))
 			gameSessionService.leaveGameSession(loggedInPlayer.getPlayer(),
 					gameSession);

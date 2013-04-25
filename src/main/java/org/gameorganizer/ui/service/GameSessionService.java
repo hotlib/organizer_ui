@@ -85,7 +85,18 @@ public class GameSessionService implements Serializable {
 
 		query.setParameter("email", player.getEmail());
 		query.setParameter("gameSession", gameSession);
+		query.executeUpdate();
+	}
 
+	public Boolean hasJoined(Player player, GameSession gameSession) {
+		Query query = null;
+		
+		query = entityManager
+				.createQuery("SELECT x.id FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.gameSession=:gameSession");
+
+		query.setParameter("email", player.getEmail());
+		query.setParameter("gameSession", gameSession);
+		return !Boolean.valueOf(query.getResultList().isEmpty());
 	}
 
 	public List<GameSession> getGameSessionsForPlayer(Player player,
@@ -96,10 +107,10 @@ public class GameSessionService implements Serializable {
 		if (GameSessionRelation.OWNER.equals(relation)) {
 			query = entityManager
 					.createQuery("SELECT x FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.relation=:relation");
-			
+
 		}
 
-		//all joinable gamesessions
+		// all joinable gamesessions
 		if (GameSessionRelation.JOINER.equals(relation)) {
 			query = entityManager
 					.createQuery("SELECT z FROM GameSession z WHERE z.id NOT IN (SELECT x.id FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.relation=:relation)");
