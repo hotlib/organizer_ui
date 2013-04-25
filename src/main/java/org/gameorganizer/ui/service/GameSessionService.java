@@ -96,16 +96,16 @@ public class GameSessionService implements Serializable {
 		if (GameSessionRelation.OWNER.equals(relation)) {
 			query = entityManager
 					.createQuery("SELECT x FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.relation=:relation");
-
-			query.setParameter("email", player.getEmail());
+			
 		}
 
 		//all joinable gamesessions
 		if (GameSessionRelation.JOINER.equals(relation)) {
 			query = entityManager
-					.createQuery("SELECT x FROM GameSession x JOIN x.attendants y WHERE y.relation <> :relation");
+					.createQuery("SELECT z FROM GameSession z WHERE z.id NOT IN (SELECT x.id FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.relation=:relation)");
 		}
 
+		query.setParameter("email", player.getEmail());
 		query.setParameter("relation", GameSessionRelation.OWNER);
 		return query.getResultList();
 

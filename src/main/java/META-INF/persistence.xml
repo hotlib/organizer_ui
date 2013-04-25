@@ -8,11 +8,12 @@
 		<properties>
 			<property name="eclipselink.ddl-generation" value="create-tables" />
 			<property name="eclipselink.ddl-generation.output-mode"
-				value="database" />
+				value="sql-script" />
 			<property name="eclipselink.target-database" value="PostgreSQL" />
 			<property name="eclipselink.create-ddl-jdbc-file-name"
 				value="create.sql" />
-			<property name="eclipselink.logging.level" value="OFF" />
+			
+			 <property name="eclipselink.logging.level" value="OFF"/>
 		</properties>
 	</persistence-unit>
 </persistence>
