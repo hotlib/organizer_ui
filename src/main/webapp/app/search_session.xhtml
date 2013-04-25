@@ -8,9 +8,9 @@
 
 	<ui:define name="content">
 		<h:form>
-			<rich:extendedDataTable value="#{gameSessionManager.gameSessions}"
+			<rich:extendedDataTable value="#{gameSessionManager.joinableGameSessions}"
 				var="gameSession"
-				rendered="#{not empty gameSessionManager.gameSessions}" width="100%"
+				rendered="#{not empty gameSessionManager.joinableGameSessions}" width="100%"
 				style="height:100%; width:100%;" selectionMode="single"
 				id="searchTable">
 
@@ -86,14 +86,6 @@
 
 
 			</a4j:outputPanel>
-
-
-
-
-
-
-
-
 
 
 		</h:form>

@@ -24,7 +24,8 @@ public class GameSessionController implements Serializable {
 	private static final long serialVersionUID = -4421765006901163944L;
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();
 	private GameSession selectionItem;
-
+	private List<GameSession> joinableGameSessions = new LinkedList<GameSession>();
+	
 	@Inject
 	private LoggedInPlayer loggedInPlayer;
 
@@ -40,6 +41,15 @@ public class GameSessionController implements Serializable {
 		System.out.println("selected: " + result);
 
 		return result;
+	}
+
+	
+	
+	public List<GameSession> getJoinableGameSessions() {
+		joinableGameSessions.clear();
+		joinableGameSessions.addAll(gameSessionService.getGameSessionsForPlayer(
+				loggedInPlayer.getPlayer(), GameSessionRelation.JOINER));
+		return joinableGameSessions;
 	}
 
 	public void setLastIndex(int lastIndex) {
@@ -80,13 +90,7 @@ public class GameSessionController implements Serializable {
 		return gameSessions;
 	}
 
-	public List<GameSession> getJoinedGameSessions() {
-		gameSessions.clear();
-		gameSessions.addAll(gameSessionService.getGameSessionsForPlayer(
-				loggedInPlayer.getPlayer(), GameSessionRelation.JOINER));
-		return gameSessions;
-	}
-
+	
 	public String editItem(GameSession session) {
 		return null;
 	}
@@ -94,8 +98,7 @@ public class GameSessionController implements Serializable {
 	public Boolean isJoined(GameSession session) {
 		List<GameSession> sessions = gameSessionService
 				.getGameSessionsForPlayer(loggedInPlayer.getPlayer(),
-						GameSessionRelation.OWNER); // TODO
-													// GameSessionRelation.JOINER
+						GameSessionRelation.JOINER); 
 
 		for (GameSession gameSession : sessions)
 			for (Attendant attendant : gameSession.getAttendants()) {

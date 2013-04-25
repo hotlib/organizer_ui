@@ -78,33 +78,37 @@ public class GameSessionService implements Serializable {
 	}
 
 	public void leaveGameSession(Player player, GameSession gameSession) {
-		// Attendant attendant = findAttendantWithEmail(player.getEmail(),
-		// gameSession);
 
-		Attendant attendant = null;
-		
-		List<GameSession> sessions = getGameSessionsForPlayer(player,
-				GameSessionRelation.OWNER);
+		// TODO check if joiner
+		Query query = entityManager
+				.createQuery("DELETE FROM Attendant x WHERE x.player.email=:email AND x.gameSession=:gameSession");
 
-		for (GameSession gs : sessions)
-			for (Attendant at : gs.getAttendants()) {
-				if (gs.equals(gameSession)
-						&& at.getPlayer().equals(player))
-					attendant = at;
-			}
+		query.setParameter("email", player.getEmail());
+		query.setParameter("gameSession", gameSession);
 
-		entityManager.remove(entityManager.merge(attendant));
 	}
 
 	public List<GameSession> getGameSessionsForPlayer(Player player,
 			GameSessionRelation relation) {
-		// Query query =
-		// entityManager.createQuery("SELECT x FROM GameSession x WHERE x.attendants.player.email=:email AND x.attendants.relation=:relation");
-		Query query = entityManager.createQuery("SELECT x FROM GameSession x");
 
-		// query.setParameter("email", player.getEmail());
-		// query.setParameter("relation", relation);
+		Query query = null;
+
+		if (GameSessionRelation.OWNER.equals(relation)) {
+			query = entityManager
+					.createQuery("SELECT x FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.relation=:relation");
+
+			query.setParameter("email", player.getEmail());
+		}
+
+		//all joinable gamesessions
+		if (GameSessionRelation.JOINER.equals(relation)) {
+			query = entityManager
+					.createQuery("SELECT x FROM GameSession x JOIN x.attendants y WHERE y.relation <> :relation");
+		}
+
+		query.setParameter("relation", GameSessionRelation.OWNER);
 		return query.getResultList();
+
 	}
 
 }
