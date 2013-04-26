@@ -177,14 +177,25 @@ public class GameSessionController implements Serializable {
 				selectionItem, sessionMessage);
 	}
 
+	
 	public List<Player> getJoinedPlayers() {
+		return getJoinedPlayers(selectionItem);
+	}
+	
+	public List<Player> getJoinedPlayers(GameSession gameSession) {
 
-		if (selectionItem == null)
-			return Collections.EMPTY_LIST;
+		if (gameSession == null)
+			return new LinkedList<Player>();
 
 		List<Player> players = gameSessionService.getJoinedPlayers(
-				loggedInPlayer.getPlayer(), selectionItem);
+				loggedInPlayer.getPlayer(), gameSession);
 
+		System.out.println("players that joined: " + gameSession.getPlace() + " id: " + gameSession.getId());
+		
+		for (Player player : players) {
+			System.out.println(player.getNickName());
+		}
+		
 		return players;
 	}
 

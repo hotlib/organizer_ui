@@ -43,8 +43,8 @@
 					<h:outputText value="#{gameSession.place}" />
 				</rich:column>
 				<rich:column width="150px">
-					<f:facet name="header">Players</f:facet>
-					<h:outputText value="#{gameSession.joinedPlayers.size()}" />
+					<f:facet name="header">Joined players</f:facet>
+					<h:outputText value="#{gameSessionManager.getJoinedPlayers(gameSession).size()}" />
 				</rich:column>
 
 				<rich:column width="120px">
@@ -119,8 +119,8 @@
 
 
 			<rich:extendedDataTable
-				value="#{gameSessionManager.selectionItem.joinedPlayers}" var="pl"
-				rendered="#{not empty gameSessionManager.selectionItem.joinedPlayers}"
+				value="#{gameSessionManager.joinedPlayers}" var="pl"
+				rendered="#{gameSessionManager.joinedPlayers.size() > 0}"
 				selectionMode="none">
 
 				<rich:column width="200px">
