@@ -149,10 +149,12 @@ public class GameSessionController implements Serializable {
 		return getCreatedGameSessions();
 	}
 
-	private String getSessionMessage(Player player, GameSession gameSession) {
-		if (gameSession == null)
+	public String getSessionMessage(Player player, GameSession gameSession) {
+		if (gameSession == null){
+			System.out.println("getSessionMessage(): the gameSession is empty " );
 			return "";
-
+		}
+		
 		System.out.println("called getSessionMessage for session "
 				+ gameSession.getId());
 
