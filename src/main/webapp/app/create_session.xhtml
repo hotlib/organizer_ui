@@ -35,7 +35,8 @@
 				onready="selectTableRow(#{rich:component('createdSessions')}, #{not empty gameSessionManager.selectionItem}, #{gameSessionManager.selectedItemIndex})">
 
 				<a4j:ajax event="selectionchange"
-					listener="#{gameSessionManager.createdSelection}" render="joinedPlayers" />
+					listener="#{gameSessionManager.createdSelection}"
+					render="joinedPlayers" />
 
 				<rich:column width="550px">
 					<f:facet name="header">Place</f:facet>
@@ -60,8 +61,8 @@
 						onclick="#{rich:component('confirmPane')}.show()" />
 
 					<a4j:jsFunction name="deleteGameSession"
-						action="#{gameSessionManager.deleteSession}"
-						render="sessionTable" execute="@this"
+						action="#{gameSessionManager.deleteSession}" render="sessionTable"
+						execute="@this"
 						oncomplete="#{rich:component('confirmPane')}.hide();" />
 
 					<a4j:commandLink value="Edit" style="float: left;"
@@ -100,8 +101,8 @@
 						datePattern="dd/M/yy HH:mm" showApplyButton="true"
 						cellWidth="24px" cellHeight="22px" style="width:200px">
 					</rich:calendar>
-
-
+					<h:outputText value="Message" />
+					<h:inputText value="#{gameSessionManager.ownerSessionMessage}" />
 				</h:panelGrid>
 				<a4j:commandButton value="Store" render="createdSessions"
 					action="#{gameSessionManager.save}" execute="editPane"
@@ -120,13 +121,13 @@
 			<rich:extendedDataTable
 				value="#{gameSessionManager.selectionItem.joinedPlayers}" var="pl"
 				rendered="#{not empty gameSessionManager.selectionItem.joinedPlayers}"
-				selectionMode="none" >
+				selectionMode="none">
 
 				<rich:column width="700px">
 					<f:facet name="header">Player name</f:facet>
 					<h:outputText value="#{pl.nickName}" />
 				</rich:column>
-				
+
 			</rich:extendedDataTable>
 		</h:form>
 

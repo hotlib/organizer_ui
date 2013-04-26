@@ -21,12 +21,12 @@ public class LoggedInPlayer implements Serializable{
 	private Player player;
 
 	@EJB
-	PlayerService playerseService;
+	PlayerService playerService;
 	
 	public Player getPlayer() {
 		if(player == null){
 			String login = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-			player = playerseService.getPlayer(login);
+			player = playerService.getPlayer(login);
 		}
 		
 		return player;

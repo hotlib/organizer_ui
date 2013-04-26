@@ -8,10 +8,10 @@
 
 	<ui:define name="content">
 		<h:form>
-			<rich:extendedDataTable value="#{gameSessionManager.joinableGameSessions}"
-				var="gameSession"
-				rendered="#{not empty gameSessionManager.joinableGameSessions}" width="100%"
-				style="height:100%; width:100%;" selectionMode="single"
+			<rich:extendedDataTable
+				value="#{gameSessionManager.joinableGameSessions}" var="gameSession"
+				rendered="#{not empty gameSessionManager.joinableGameSessions}"
+				width="100%" style="height:100%; width:100%;" selectionMode="single"
 				id="searchTable">
 
 				<a4j:ajax execute="@this" event="selectionchange"
@@ -28,14 +28,25 @@
 					<f:facet name="header">Players</f:facet>
 					<h:outputText value="#{gameSession.joinedPlayers.size()}" />
 				</rich:column>
-				<rich:column>
+				<rich:column width="150px">
 					<f:facet name="header">Session begin</f:facet>
-					<h:outputText value="#{gameSession.sessionBegin}" />
+					<h:outputText value="#{gameSession.sessionBegin}">
+						<f:convertDateTime type="date" pattern="dd-MM-yyyy HH:mm" />
+					</h:outputText>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Created by</f:facet>
+					<h:outputText value="#{gameSession.creator.nickName}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Message</f:facet>
+					<h:outputText value="#{gameSessionManager.getOwnerSessionMessage(gameSession)}" />
 				</rich:column>
 				<rich:column width="200px">
 					<f:facet name="header">Action</f:facet>
 
-					<a4j:commandLink value="#{gameSessionManager.isJoined(gameSession) ? 'Leave' : 'Join'}"
+					<a4j:commandLink
+						value="#{gameSessionManager.isJoined(gameSession) ? 'Leave' : 'Join'}"
 						style="float: left;" render="searchTable" execute="@this"
 						action="#{gameSessionManager.flipJoined(gameSession)}" />
 
@@ -68,8 +79,7 @@
 
 			<a4j:outputPanel ajaxRendered="true">
 
-				<rich:extendedDataTable
-					value="#{gameSessionManager.joinedPlayers}"
+				<rich:extendedDataTable value="#{gameSessionManager.joinedPlayers}"
 					var="player"
 					rendered="#{not empty gameSessionManager.joinedPlayers}"
 					selectionMode="none" id="joinedPlayers">

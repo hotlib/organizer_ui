@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
 
+import org.gameorganizer.ui.entity.Attendant;
 import org.gameorganizer.ui.entity.GameSession;
 import org.gameorganizer.ui.entity.GameSessionRelation;
 import org.gameorganizer.ui.entity.Player;
@@ -148,16 +149,25 @@ public class GameSessionController implements Serializable {
 		return getCreatedGameSessions();
 	}
 
-	public String getSessionMessage() {
-		if (selectionItem == null)
+	private String getSessionMessage(Player player, GameSession gameSession) {
+		if (gameSession == null)
 			return "";
 
 		System.out.println("called getSessionMessage for session "
-				+ selectionItem.getId());
+				+ gameSession.getId());
 
-			return gameSessionService.getSessionMessage(
-					loggedInPlayer.getPlayer(), selectionItem);
-	
+		return gameSessionService.getSessionMessage(player, gameSession);
+
+	}
+
+	public String getSessionMessage() {
+		return getSessionMessage(loggedInPlayer.getPlayer(), selectionItem);
+
+	}
+
+	public String getOwnerSessionMessage(GameSession gameSession) {
+
+		return getSessionMessage(gameSession.getCreator(), gameSession);
 	}
 
 	public void setSessionMessage(String sessionMessage) {
@@ -176,6 +186,19 @@ public class GameSessionController implements Serializable {
 		return players;
 	}
 
-	
+	public String getOwnerSessionMessage() {
+		if (selectionItem == null)
+			return "";
+
+		return getOwnerSessionMessage(selectionItem);
+	}
+
+	public void setOwnerSessionMessage(String sessionMessage) {
+		for (Attendant at : selectionItem.getAttendants()) {
+			if (GameSessionRelation.OWNER.equals(at.getRelation())) {
+				at.setSessionMessage(sessionMessage);
+			}
+		}
+	}
 
 }

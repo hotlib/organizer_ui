@@ -39,39 +39,16 @@ public class GameSessionService implements Serializable {
 	public void deleteGameSession(GameSession gameSession) {
 		gameSession = entityManager.merge(gameSession);
 
-		for (Attendant attendant : gameSession.getAttendants()) {
+		Query query = entityManager
+				.createQuery("DELETE FROM Attendant x WHERE x.gameSession=:gameSession");
 
-			entityManager.remove(entityManager.merge(attendant));
-		}
-
+		query.setParameter("gameSession", gameSession);
+		query.executeUpdate();
+		
 		entityManager.remove(gameSession);
 	}
 
-	public void updateSessionMessage(String playerEmail, String sessionMessage,
-			GameSession gameSession) {
-		Attendant attendantToBeUpdated = null;
-
-		attendantToBeUpdated = findAttendantWithEmail(playerEmail, gameSession);
-
-		attendantToBeUpdated.setSessionMessage(sessionMessage);
-
-		entityManager.merge(attendantToBeUpdated);
-
-	}
-
-	// TODO has to find attendats from DB because gameSession.getAttendants()
-	// might be empty
-	private Attendant findAttendantWithEmail(String playerEmail,
-			GameSession gameSession) {
-
-		for (Attendant attendant : gameSession.getAttendants()) {
-			if (attendant.getPlayer().getEmail().equals(playerEmail))
-				return attendant;
-		}
-		throw new RuntimeException("AttendantWithEmail not found, email: "
-				+ playerEmail);
-	}
-
+	
 	public void joinGameSession(Player player, GameSession gameSession) {
 		Attendant at = new Attendant(player, gameSession,
 				GameSessionRelation.JOINER);
@@ -144,26 +121,25 @@ public class GameSessionService implements Serializable {
 
 		Attendant at = (Attendant) query.getSingleResult();
 
+		System.out.println("update message on " + at.getId() + " session: " + at.getGameSession().getId());
+		
 		at.setSessionMessage(sessionMessage);
+		
 	}
 
-	public List <Player> getJoinedPlayers(Player player, GameSession gameSession) {
+	public List <Player> getJoinedPlayers(Player excludedPlayer, GameSession gameSession) {
 		List <Player> players = new LinkedList<Player>();
 		Query query = entityManager
-				.createQuery("SELECT x FROM Attendant x WHERE x.player.email<>:email AND x.gameSession=:gameSession");
+				.createQuery("SELECT x FROM Attendant x WHERE x.player.email<>:email AND x.gameSession=:gameSession AND x.relation<>:relation");
 
-		query.setParameter("email", player.getEmail());
+		query.setParameter("email", excludedPlayer.getEmail());
 		query.setParameter("gameSession", gameSession);
-
+		query.setParameter("relation", GameSessionRelation.OWNER);
+		
 		List<Attendant> attendants = query.getResultList();
 
-		for (Attendant attendant : attendants) {
-			
-			if(GameSessionRelation.OWNER.equals(attendant.getRelation()))
-				continue;
-			
+		for (Attendant attendant : attendants)		
 			players.add(attendant.getPlayer());
-		}
 
 		return players;
 	}
