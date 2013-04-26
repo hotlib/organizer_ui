@@ -158,6 +158,10 @@ public class GameSessionService implements Serializable {
 		List<Attendant> attendants = query.getResultList();
 
 		for (Attendant attendant : attendants) {
+			
+			if(GameSessionRelation.OWNER.equals(attendant.getRelation()))
+				continue;
+			
 			players.add(attendant.getPlayer());
 		}
 
