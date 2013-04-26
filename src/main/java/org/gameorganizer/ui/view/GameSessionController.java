@@ -1,6 +1,8 @@
 package org.gameorganizer.ui.view;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,9 +11,11 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 
 import org.gameorganizer.ui.entity.GameSession;
 import org.gameorganizer.ui.entity.GameSessionRelation;
+import org.gameorganizer.ui.entity.Player;
 import org.gameorganizer.ui.service.GameSessionService;
 import org.richfaces.component.UIExtendedDataTable;
 
@@ -23,13 +27,13 @@ public class GameSessionController implements Serializable {
 	private List<GameSession> gameSessions = new LinkedList<GameSession>();
 	private GameSession selectionItem;
 	private List<GameSession> joinableGameSessions = new LinkedList<GameSession>();
-	
+
 	@Inject
 	private LoggedInPlayer loggedInPlayer;
 
 	@EJB
 	GameSessionService gameSessionService;
-	
+
 	public int getSelectedItemIndex() {
 		if (selectionItem == null) {
 			return -1;
@@ -41,12 +45,11 @@ public class GameSessionController implements Serializable {
 		return result;
 	}
 
-	
-	
 	public List<GameSession> getJoinableGameSessions() {
 		joinableGameSessions.clear();
-		joinableGameSessions.addAll(gameSessionService.getGameSessionsForPlayer(
-				loggedInPlayer.getPlayer(), GameSessionRelation.JOINER));
+		joinableGameSessions.addAll(gameSessionService
+				.getGameSessionsForPlayer(loggedInPlayer.getPlayer(),
+						GameSessionRelation.JOINER));
 		return joinableGameSessions;
 	}
 
@@ -61,24 +64,32 @@ public class GameSessionController implements Serializable {
 		this.selectionItem = selectionItem;
 	}
 
-	public void selection(AjaxBehaviorEvent event) {
+	public void selection(UIExtendedDataTable dataTable,
+			List<GameSession> sessions) {
 		System.out.println("new select");
-		if (gameSessions.isEmpty())
+		if (sessions.isEmpty())
 			return;
 
-		UIExtendedDataTable dataTable = (UIExtendedDataTable) event
-				.getComponent();
 		if (dataTable.getSelection() != null
 				&& !dataTable.getSelection().isEmpty()) {
 			Integer index = (Integer) dataTable.getSelection().iterator()
 					.next();
 
-			if (index >= gameSessions.size())
-				selectionItem = gameSessions.get(gameSessions.size() - 1);
+			if (index >= sessions.size())
+				selectionItem = sessions.get(sessions.size() - 1);
 			else
-				selectionItem = gameSessions.get(index);
+				selectionItem = sessions.get(index);
 		}
 		return;
+	}
+
+	public void joinableSelection(AjaxBehaviorEvent event) {
+		selection((UIExtendedDataTable) event.getComponent(),
+				joinableGameSessions);
+	}
+
+	public void createdSelection(AjaxBehaviorEvent event) {
+		selection((UIExtendedDataTable) event.getComponent(), gameSessions);
 	}
 
 	public List<GameSession> getCreatedGameSessions() {
@@ -88,14 +99,14 @@ public class GameSessionController implements Serializable {
 		return gameSessions;
 	}
 
-	
 	public String editItem(GameSession session) {
 		return null;
 	}
 
 	public Boolean isJoined(GameSession session) {
-		
-		return gameSessionService.hasJoined(loggedInPlayer.getPlayer(), session);
+
+		return gameSessionService
+				.hasJoined(loggedInPlayer.getPlayer(), session);
 	}
 
 	public void flipJoined(GameSession gameSession) {
@@ -136,13 +147,35 @@ public class GameSessionController implements Serializable {
 	public List<GameSession> getGameSessions() {
 		return getCreatedGameSessions();
 	}
-	
+
 	public String getSessionMessage() {
-		return gameSessionService.getSessionMessage(loggedInPlayer.getPlayer(), selectionItem);
-	}
+		if (selectionItem == null)
+			return "";
+
+		System.out.println("called getSessionMessage for session "
+				+ selectionItem.getId());
+
+			return gameSessionService.getSessionMessage(
+					loggedInPlayer.getPlayer(), selectionItem);
 	
+	}
+
 	public void setSessionMessage(String sessionMessage) {
-		gameSessionService.setSessionMessage(loggedInPlayer.getPlayer(), selectionItem, sessionMessage);
+		gameSessionService.setSessionMessage(loggedInPlayer.getPlayer(),
+				selectionItem, sessionMessage);
 	}
+
+	public List<Player> getJoinedPlayers() {
+
+		if (selectionItem == null)
+			return Collections.EMPTY_LIST;
+
+		List<Player> players = gameSessionService.getJoinedPlayers(
+				loggedInPlayer.getPlayer(), selectionItem);
+
+		return players;
+	}
+
 	
+
 }

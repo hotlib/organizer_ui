@@ -15,7 +15,7 @@
 				id="searchTable">
 
 				<a4j:ajax execute="@this" event="selectionchange"
-					listener="#{gameSessionManager.selection}" render=":res" />
+					listener="#{gameSessionManager.joinableSelection}" render=":res" />
 
 				<f:facet name="caption">
 					<h:outputText value="Game sessions" />
@@ -54,7 +54,7 @@
 			<rich:popupPanel header="Edit session message" id="editMessage"
 				domElementAttachment="parent" width="400" height="170">
 				<h:panelGrid columns="2"
-					rendered="#{not empty gameSessionManager.selectionItem}">
+					rendered="#{not empty gameSessionManager.selectionItem and gameSessionManager.isJoined(gameSessionManager.selectionItem)}">
 					<h:outputText value="Session Message:" />
 					<h:inputText value="#{gameSessionManager.sessionMessage}" />
 				</h:panelGrid>
@@ -69,9 +69,9 @@
 			<a4j:outputPanel ajaxRendered="true">
 
 				<rich:extendedDataTable
-					value="#{gameSessionManager.selectionItem.joinedPlayers}"
+					value="#{gameSessionManager.joinedPlayers}"
 					var="player"
-					rendered="#{not empty gameSessionManager.selectionItem.joinedPlayers}"
+					rendered="#{not empty gameSessionManager.joinedPlayers}"
 					selectionMode="none" id="joinedPlayers">
 
 					<rich:column width="100px">

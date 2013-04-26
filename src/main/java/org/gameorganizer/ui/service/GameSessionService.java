@@ -1,11 +1,13 @@
 package org.gameorganizer.ui.service;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -123,30 +125,43 @@ public class GameSessionService implements Serializable {
 	}
 
 	public String getSessionMessage(Player player, GameSession gameSession) {
-		Query query = null;
-
-		query = entityManager
+		Query query = entityManager
 				.createQuery("SELECT y.sessionMessage FROM GameSession x JOIN x.attendants y WHERE y.player.email=:email AND y.gameSession=:gameSession");
 
 		query.setParameter("email", player.getEmail());
 		query.setParameter("gameSession", gameSession);
-		
+
 		return (String) query.getSingleResult();
 	}
-	
-	public void setSessionMessage(Player player, GameSession gameSession, String sessionMessage) {
-		Query query = null;
 
-		query = entityManager
+	public void setSessionMessage(Player player, GameSession gameSession,
+			String sessionMessage) {
+		Query query = entityManager
 				.createQuery("SELECT x FROM Attendant x WHERE x.player.email=:email AND x.gameSession=:gameSession");
 
 		query.setParameter("email", player.getEmail());
 		query.setParameter("gameSession", gameSession);
-		
+
 		Attendant at = (Attendant) query.getSingleResult();
-		
+
 		at.setSessionMessage(sessionMessage);
 	}
-	
+
+	public List <Player> getJoinedPlayers(Player player, GameSession gameSession) {
+		List <Player> players = new LinkedList<Player>();
+		Query query = entityManager
+				.createQuery("SELECT x FROM Attendant x WHERE x.player.email<>:email AND x.gameSession=:gameSession");
+
+		query.setParameter("email", player.getEmail());
+		query.setParameter("gameSession", gameSession);
+
+		List<Attendant> attendants = query.getResultList();
+
+		for (Attendant attendant : attendants) {
+			players.add(attendant.getPlayer());
+		}
+
+		return players;
+	}
 
 }
