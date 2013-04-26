@@ -24,9 +24,13 @@
 					<f:facet name="header">Place</f:facet>
 					<h:outputText value="#{gameSession.place}" />
 				</rich:column>
-				<rich:column width="100px">
+				<rich:column width="60px">
 					<f:facet name="header">Players</f:facet>
-					<h:outputText value="#{gameSession.joinedPlayers.size()}" />
+					<h:outputText value="#{gameSessionManager.getJoinedPlayers(gameSession).size() + 1}" />
+				</rich:column>
+				<rich:column width="100px">
+					<f:facet name="header">My Message</f:facet>
+					<h:outputText value="#{gameSessionManager.isJoined(gameSession) ? gameSessionManager.getSessionMessage(gameSession) : ''}" />
 				</rich:column>
 				<rich:column width="150px">
 					<f:facet name="header">Session begin</f:facet>

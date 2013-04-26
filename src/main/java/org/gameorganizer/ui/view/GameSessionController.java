@@ -162,6 +162,10 @@ public class GameSessionController implements Serializable {
 
 	}
 
+	public String getSessionMessage(GameSession gameSession){
+		return getSessionMessage(loggedInPlayer.getPlayer(), gameSession);
+	}
+	
 	public String getSessionMessage() {
 		return getSessionMessage(loggedInPlayer.getPlayer(), selectionItem);
 
