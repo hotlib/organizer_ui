@@ -35,7 +35,7 @@
 				onready="selectTableRow(#{rich:component('createdSessions')}, #{not empty gameSessionManager.selectionItem}, #{gameSessionManager.selectedItemIndex})">
 
 				<a4j:ajax event="selectionchange"
-					listener="#{gameSessionManager.createdSelection}"
+					listener="#{gameSessionManager.tableSelection}"
 					render="joinedPlayers" />
 
 				<rich:column width="550px">
